@@ -18,22 +18,49 @@
         $( document ).ready( initDocument );
 
         function initDocument() {
-            $('#grade-level').on('input', recalculate);
-            $('#initial-encore-level').on('input', recalculate);
-            $('#initial-goal').on('input', recalculate);
+            $('#initial-encore-level').on('input', () => {
+                calculateIPR();
+                updateQuizTotal();
+            });
+
+            $('#ct-1').on('input', () => calculateAvg('ct'));
+            $('#ct-2').on('input', () => calculateAvg('ct'));
+            $('#ct-3').on('input', () => calculateAvg('ct'));
+
+            $('#pr-1').on('input', () => calculateAvg('pr'));
+            $('#pr-2').on('input', () => calculateAvg('pr'));
+            $('#pr-3').on('input', () => calculateAvg('pr'));
+
+            $('#ht-1').on('input', () => calculateAvg('ht'));
+            $('#ht-2').on('input', () => calculateAvg('ht'));
+            $('#ht-3').on('input', () => calculateAvg('ht'));
+        }
+
+        function calculateAvg(whatToAvg) {
+            const av1 = Number($('#' + whatToAvg + '-1').val());
+            const av2 = Number($('#' + whatToAvg + '-2').val());
+            const av3 = Number($('#' + whatToAvg + '-3').val());
+            const avg = $('#' + whatToAvg + '-avg');
+
+            if (av1 === 0 || av2 === 0 || av3 === 0) {
+                avg.val('Need 3 entries');
+                return;
+            }
+
+            avg.val(Number((av1 + av2 + av3) / 3).toLocaleString('en-US', {maximumFractionDigits: 2}));
         }
 
         function recalculate() {
-            calculateIPR( $('#initial-encore-level').val() );
+            //TODO
         }
 
-        function calculateIPR(level) {
+        function calculateIPR() {
+            const level = $('#initial-encore-level').val()
             const ipr = $('#initial-placement-range');
 
             if ( !validLevels.includes(level) &&
                  !validLevels.map(item => Number(item)).includes(Number(level)) ) {
-                ipr.val('invalid level entered');
-                // TODO: make a more robust error notification
+                ipr.val('Need valid level');
                 return;
             }
 
@@ -55,6 +82,19 @@
             ipr.val('100 - 140');
         }
 
+        function updateQuizTotal() {
+            const level = $('#initial-encore-level');
+            const quizTotal = $('#quiz-total');
+
+            if ( !validLevels.includes(level) &&
+                 !validLevels.map(item => Number(item)).includes(Number(level)) ) {
+                quizTotal.val('');
+                return;
+            }
+
+            // TODO: update max of Quiz Correct Answers and Quiz Questions in Story
+        }
+
     </script>
 
     <title>Initial Placement Calculator</title>
@@ -74,25 +114,100 @@
                 <div class="col-md-3">
                     <label for="grade-level" class="">Grade Level</label><input type="text" class="form-control"
                         name="grade-level" maxlength="2" id="grade-level"
-                        title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)" required="required"
-                        aria-required="true">
+                        title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)">
                 </div>
                 <div class="col-md-3">
                     <label for="initial-encore-level" class="">Initial Encore Level</label><input type="text"
                         class="form-control" name="initial-encore-level" maxlength="3" id="initial-encore-level"
-                        title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)" required="required"
-                        aria-required="true">
+                        title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)">
                 </div>
                 <div class="col-md-3">
                     <label for="initial-goal" class="formbuilder-number-label">Initial Goal</label><input type="number"
                         class="form-control" name="initial-goal" value="60" min="0" max="200" step="1"
-                        id="initial-goal" title="Student's initial goal, in words correct per minute"
-                        required="required" aria-required="true">
+                        id="initial-goal" title="Student's initial goal, in words correct per minute">
                 </div>
                 <div class="col-md-3">
                     <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement Range</label><input type="text"
                         class="form-control" name="initial-placement-range" id="initial-placement-range"
-                        title="Student's initial placement range (calculated from initial level)" readonly>
+                        title="Student's initial placement range (calculated from initial level)" readonly disabled="disabled">
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="ct-1" class="">Cold Timing 1st Story</label><input type="number" class="form-control"
+                        name="ct-1" id="ct-1" value="60" min="0" max="500" title="Cold Timing for first story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ct-2" class="">Cold Timing 2nd Story</label><input type="number" class="form-control"
+                        name="ct-2" id="ct-2" value="60" min="0" max="500" title="Cold Timing for second story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ct-3" class="">Cold Timing 3rd Story</label><input type="number" class="form-control"
+                        name="ct-3" id="ct-3" value="60" min="0" max="500" title="Cold Timing for third story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ct-avg" class="formbuilder-number-label">Average Cold Timing</label><input type="text"
+                        class="form-control" name="ct-avg" id="ct-avg"
+                        title="Student's average cold timing (calculated from first three stories)" readonly disabled="disabled">
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="pr-1" class=""># Practices 1st Story</label><input type="number" class="form-control"
+                        name="pr-1" id="pr-1" value="5" min="0" max="500" title="Number of practices for first story">
+                </div>
+                <div class="col-md-3">
+                    <label for="pr-2" class=""># Practices 2nd Story</label><input type="number" class="form-control"
+                        name="pr-2" id="pr-2" value="5" min="0" max="500" title="Number of practices for second story">
+                </div>
+                <div class="col-md-3">
+                    <label for="pr-3" class=""># Practices 3rd Story</label><input type="number" class="form-control"
+                        name="pr-3" id="pr-3" value="5" min="0" max="500" title="Number of practices for third story">
+                </div>
+                <div class="col-md-3">
+                    <label for="pr-avg" class="formbuilder-number-label">Average # Practices</label><input type="text"
+                        class="form-control" name="pr-avg" id="pr-avg"
+                        title="Student's average number of practices (calculated from first three stories)" readonly disabled="disabled">
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="ht-1" class="">Hot Timing 1st Story</label><input type="number" class="form-control"
+                        name="ht-1" id="ht-1" value="100" min="0" max="500" title="Hot Timing for first story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ht-2" class="">Hot Timing 2nd Story</label><input type="number" class="form-control"
+                        name="ht-2" id="ht-2" value="100" min="0" max="500" title="Hot Timing for second story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ht-3" class="">Hot Timing 3rd Story</label><input type="number" class="form-control"
+                        name="ht-3" id="ht-3" value="100" min="0" max="500" title="Hot Timing for third story">
+                </div>
+                <div class="col-md-3">
+                    <label for="ht-avg" class="formbuilder-number-label">Average Hot Timing</label><input type="text"
+                        class="form-control" name="ht-avg" id="ht-avg"
+                        title="Student's average hot timing (calculated from first three stories)" readonly disabled="disabled">
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <label for="quiz-correct" class="">Quiz Correct Answers</label>
+                    <input type="number" class="form-control" name="quiz-correct" id="quiz-correct"
+                    title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                </div>
+                <div class="col-md-4">
+                    <label for="quiz-total" class="">Quiz Questions in Story</label>
+                    <input type="text" class="form-control" name="quiz-total" id="quiz-total"
+                    title="Number of quiz questions in the level" value="" readonly disabled="disabled">
+                </div>
+                <div class="col-md-4">
+                    <label for="quiz-total" class="">Comprehension Percent Correct</label>
+                    <input type="text" class="form-control" name="quiz-total" id="quiz-total"
+                    title="Number of quiz questions in the level" value="" readonly disabled="disabled">
                 </div>
             </div>
         </form>
