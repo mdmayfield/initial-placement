@@ -21,6 +21,7 @@
             $('#initial-encore-level').on('input', () => {
                 calculateIPR();
                 updateQuizTotal();
+                updateQuizPercent();
             });
 
             $('#ct-1').on('input', () => calculateAvg('ct'));
@@ -34,6 +35,8 @@
             $('#ht-1').on('input', () => calculateAvg('ht'));
             $('#ht-2').on('input', () => calculateAvg('ht'));
             $('#ht-3').on('input', () => calculateAvg('ht'));
+
+            $('#quiz-correct').on('input', updateQuizPercent);
         }
 
         function calculateAvg(whatToAvg) {
@@ -83,16 +86,44 @@
         }
 
         function updateQuizTotal() {
-            const level = $('#initial-encore-level');
+            const level = $('#initial-encore-level').val();
             const quizTotal = $('#quiz-total');
 
             if ( !validLevels.includes(level) &&
                  !validLevels.map(item => Number(item)).includes(Number(level)) ) {
-                quizTotal.val('');
+                quizTotal.val('Need valid level');
                 return;
             }
 
-            // TODO: update max of Quiz Correct Answers and Quiz Questions in Story
+            // TODO: accommodate Idioms?
+            // 0.8 - 2.7: 5 questions
+            // 3.0: 7 for idioms, 5 for sequenced
+            // 3.5: 7 for idioms, 6 for sequenced
+            // 4.0: 7 for idioms, 7 for sequenced
+            // 4.5: 7 for idioms, 7 for sequenced
+            // 5.0: 7 questions
+            // 5.6 and above: 9
+
+            if (Number(level) < 3.5) {
+                quizTotal.val('5');
+                return;
+            }
+            if (Number(level) < 4.0) {
+                quizTotal.val('6');
+                return;
+            }
+            if (Number(level) < 5.6) {
+                quizTotal.val('7');
+                return;
+            }
+            quizTotal.val('9');
+        }
+
+        function updateQuizPercent() {
+            const quizTotal = Number($('#quiz-total').val());
+            const quizCorrect = Number($('#quiz-correct').val());
+            $('#quiz-percent').val((quizTotal > 0) ? (quizCorrect / quizTotal).toLocaleString('en-US', 
+                    { maximumFractionDigits: 2, style: 'percent' }) : '---' )
         }
 
     </script>
@@ -205,9 +236,9 @@
                     title="Number of quiz questions in the level" value="" readonly disabled="disabled">
                 </div>
                 <div class="col-md-4">
-                    <label for="quiz-total" class="">Comprehension Percent Correct</label>
-                    <input type="text" class="form-control" name="quiz-total" id="quiz-total"
-                    title="Number of quiz questions in the level" value="" readonly disabled="disabled">
+                    <label for="quiz-percent" class="">Comprehension Percent Correct</label>
+                    <input type="text" class="form-control" name="quiz-percent" id="quiz-percent"
+                    title="Percent of comprehension quiz questions answered correctly" value="" readonly disabled="disabled">
                 </div>
             </div>
         </form>
