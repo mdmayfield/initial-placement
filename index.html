@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+
+    </script>
+
+    <title>Initial Placement Calculator</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+
+<div class="container">
+    <h1 class="text-center">Initial Placement Calculator</h1>
+    <div class="row">
+        <form id="student-info">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="grade-level" class="">Grade Level</label><input type="text" class="form-control"
+                        name="grade-level" maxlength="2" id="grade-level"
+                        title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)" required="required"
+                        aria-required="true">
+                </div>
+                <div class="col-md-3">
+                    <label for="initial-encore-level" class="">Initial Encore Level</label><input type="text"
+                        class="form-control" name="initial-encore-level" maxlength="4" id="initial-encore-level"
+                        title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)" required="required"
+                        aria-required="true">
+                </div>
+                <div class="col-md-3">
+                    <label for="initial-goal" class="formbuilder-number-label">Initial Goal</label><input type="number"
+                        class="form-control" name="initial-goal" value="60" min="0" max="200" step="1"
+                        id="initial-goal" title="Student's initial goal, in words correct per minute"
+                        required="required" aria-required="true">
+                </div>
+                <div class="col-md-3">
+                    <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement Range</label><input type="text"
+                        class="form-control" name="initial-placement-range" id="initial-placement-range"
+                        title="Student's initial placement range (calculated from initial level)" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>
