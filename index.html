@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- MM note to self: python -m SimpleHTTPServer 8000 in a 2nd terminal -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,6 +10,50 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
+        const validLevels = [
+            '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.6', '6.0', '7.0', '8.0',
+            '0.8', '1.3', '1.8', '2.3', '2.6', '2.7'
+        ]
+
+        $( document ).ready( initDocument );
+
+        function initDocument() {
+            $('#grade-level').on('input', recalculate);
+            $('#initial-encore-level').on('input', recalculate);
+            $('#initial-goal').on('input', recalculate);
+        }
+
+        function recalculate() {
+            calculateIPR( $('#initial-encore-level').val() );
+        }
+
+        function calculateIPR(level) {
+            const ipr = $('#initial-placement-range');
+
+            if ( !validLevels.includes(level) &&
+                 !validLevels.map(item => Number(item)).includes(Number(level)) ) {
+                ipr.val('invalid level entered');
+                // TODO: make a more robust error notification
+                return;
+            }
+
+            if ( Number(level) < 3.5 ) {
+                ipr.val('30 - 60');
+                return;
+            }
+            
+            if ( Number(level) < 5.6 ) {
+                ipr.val('60 - 80');
+                return;
+            }
+
+            if ( Number(level) < 8.0 ) {
+                ipr.val('80 - 100');
+                return;
+            }
+
+            ipr.val('100 - 140');
+        }
 
     </script>
 
@@ -33,7 +79,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="initial-encore-level" class="">Initial Encore Level</label><input type="text"
-                        class="form-control" name="initial-encore-level" maxlength="4" id="initial-encore-level"
+                        class="form-control" name="initial-encore-level" maxlength="3" id="initial-encore-level"
                         title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)" required="required"
                         aria-required="true">
                 </div>
