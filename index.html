@@ -80,27 +80,27 @@
             $('#initial-encore-series').on('input', () => {
                 updateAvailableLevels();
                 displayIPR();
-                highlightCells();
+                highlightLevelCells();
             });
 
             $('#initial-encore-level').on('input', () => {
                 displayIPR();
                 updateQuizTotal();
                 updateQuizPercent();
-                highlightCells();
+                highlightLevelCells();
             });
 
             $('#ct-1').on('input', () => {
                 calculateAvg('ct');
-                highlightCells();
+                highlightLevelCells();
             });
             $('#ct-2').on('input', () => {
                 calculateAvg('ct');
-                highlightCells();
+                highlightLevelCells();
             });
             $('#ct-3').on('input', () => {
                 calculateAvg('ct');
-                highlightCells();
+                highlightLevelCells();
             });
 
             $('#pr-1').on('input', () => calculateAvg('pr'));
@@ -138,7 +138,7 @@
             ['ct', 'pr', 'ht'].forEach((avg) => calculateAvg(avg));
             updateQuizTotal();
             updateQuizPercent();
-            highlightCells();
+            highlightLevelCells();
         }
 
         function updateAvailableLevels() {
@@ -149,10 +149,10 @@
             levelMenu.empty();
 
             if (validLevels.hasOwnProperty(series)) {
-                for(let i = 0; i < validLevels[series].length; i++) {
+                for (let i = 0; i < validLevels[series].length; i++) {
                     levelMenu.append($("<option></option>")
-                    .attr('value', validLevels[series][i])
-                    .text(validLevels[series][i]));
+                        .attr('value', validLevels[series][i])
+                        .text(validLevels[series][i]));
                 }
 
                 // Default to nearest possible level in new series
@@ -217,17 +217,22 @@
             const level = $('#initial-encore-level').val();
             const series = $('#initial-encore-series').val();
             const quizTotal = $('#quiz-total');
+            const quizCorrect = $('#quiz-correct');
 
             if (!validLevels.hasOwnProperty(series) ||
                 !validLevels[series].includes(level)) {
-                    quizTotal.val('Need valid level');
-                    return;
+                quizTotal.val('Need valid level');
+                return;
             }
 
             let index = validLevels[series].indexOf(level);
+            let newNumQuestions = numQuizQuestions[series][index];
 
-            quizTotal.val(numQuizQuestions[series][index]);
-            // TODO set max of "Quiz Correct Answers"
+            quizTotal.val(newNumQuestions);
+            if (quizCorrect.val() > newNumQuestions) {
+                quizCorrect.val(newNumQuestions);
+                quizCorrect.attr({'max': newNumQuestions});
+            }
         }
 
         function updateQuizPercent() {
@@ -244,10 +249,10 @@
                 style: 'percent'
             }));
 
-            highlightCells();
+            highlightLevelCells();
         }
 
-        function highlightCells() {
+        function highlightLevelCells() {
             const ipr = calculateIPR($('#initial-encore-level').val());
             const quizPercent = $('#quiz-percent').val().split('%')[0];
             const avgCT = $('#ct-avg').val();
@@ -330,6 +335,9 @@
             $('#level-recommendation').text('');
         }
 
+        function clearGoalRec() {
+            $('#goal-recommendation').text('');
+        }
     </script>
 
     <title>Initial Placement Calculator</title>
@@ -489,6 +497,7 @@
             </form>
         </div>
         <div class="pt-5">
+            <h3>Level Recommendation</h3>
             <table class="table table-bordered" id="check-il">
                 <tbody>
                     <tr>
@@ -521,8 +530,47 @@
                 </tbody>
             </table>
         </div>
-        <div class="tp-3">
-            <h3>Level Recommendation:</h3><p><span id="level-recommendation"></span></p>
+        <div class="">
+            <p><span id="level-recommendation"></span></p>
+        </div>
+        <div class="pt-3">
+            <h3>Goal Recommendation</h3>
+            <table class="table table-bordered" id="check-ig">
+                <tbody>
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3 table-primary text-center">Goal is too low<br>Indicators: 
+                            <span id="too-high-signs"></span></td>
+                        <td class="col-sm-3 table-primary text-center">Goal is appropriate <br>Indicators: 
+                            <span id="appr-signs"></span></td>
+                        <td class="col-sm-3 table-primary text-center">Goal is too low <br>Indicators: 
+                            <span id="too-low-signs"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">(Goal) - (Average Cold Timing)<br>
+                            <span id='ig-act'>__ - __ = __</span></td>
+                        <td class="col-sm-3 text-center">Grades 1-4: 25 or less<br>Grades 5+: 35 or less</td>
+                        <td class="col-sm-3 text-center">Grades 1-4: 26 - 35<br>Grades 5+: 36 - 45</td>
+                        <td class="col-sm-3 text-center">Grades 1-4: 36 or more<br>Grades 5+: 46 or more</td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">(Average Hot Timing) - (Goal)<br>
+                            <span id='aht-ig'>__ - __ = __</span></td>
+                        <td class="col-sm-3 text-center">&gt; 10</td>
+                        <td class="col-sm-3 text-center">0 - 10</td>
+                        <td class="col-sm-3 text-center">&lt; 0</td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">Average # Practices</td>
+                        <td class="col-sm-3 text-center">&lt; 3</td>
+                        <td class="col-sm-3 text-center">3 - 10</td>
+                        <td class="col-sm-3 text-center">&gt; 10</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="">
+            <p><span id="goal-recommendation"></span></p>
         </div>
     </div>
 
