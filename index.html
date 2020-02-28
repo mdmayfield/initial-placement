@@ -98,7 +98,10 @@
 
         function calculateIPR(level) {
 
-            let ipr = { 'min': '', 'max': '' };
+            let ipr = {
+                'min': '',
+                'max': ''
+            };
 
             if (!validLevels.includes(level) &&
                 !validLevels.map(item => Number(item)).includes(Number(level))) {
@@ -212,7 +215,6 @@
 
             $(rows[row]).find('td')[column].classList.add(hightlightClass);
         }
-
     </script>
 
     <title>Initial Placement Calculator</title>
@@ -246,11 +248,12 @@
                             step="1" id="initial-goal" title="Student's initial goal, in words correct per minute">
                     </div>
                     <div class="col-md-3">
-                        <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement Range</label>
+                        <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement
+                            Range</label>
                         <input type="text" class="form-control" name="initial-placement-range"
-                        id="initial-placement-range"
-                        title="Student's initial placement range (calculated from initial level)" readonly
-                        disabled="disabled">
+                            id="initial-placement-range"
+                            title="Student's initial placement range (calculated from initial level)" readonly
+                            disabled="disabled">
                     </div>
                 </div>
 
@@ -340,8 +343,8 @@
                     <div class="col-md-4">
                         <label for="quiz-percent" class="">Comprehension Quiz Score</label>
                         <input type="text" class="form-control" name="quiz-percent" id="quiz-percent"
-                        title="Percent of comprehension quiz questions answered correctly" value="" readonly
-                        disabled="disabled">
+                            title="Percent of comprehension quiz questions answered correctly" value="" readonly
+                            disabled="disabled">
                     </div>
                 </div>
             </form>
