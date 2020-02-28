@@ -65,7 +65,7 @@
 
         function recalculate() {
             calculateIPR();
-            ['ct', 'pr', 'ht'].forEach( (avg) => calculateAvg(avg) );
+            ['ct', 'pr', 'ht'].forEach((avg) => calculateAvg(avg));
             updateQuizTotal();
             updateQuizPercent();
         }
@@ -154,121 +154,206 @@
 
     <div class="container">
         <h1 class="text-center">Initial Placement Calculator</h1>
-        <div class="row">
+        <div class="pt-3">
             <form id="student-info">
-                <div class="form-row">
+                <div class="form-row pt-2 align-items-end">
                     <div class="col-md-3">
-                        <label for="grade-level" class="">Grade Level</label><input type="text" class="form-control"
-                            name="grade-level" maxlength="2" id="grade-level"
-                            title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)">
+                        <label for="grade-level" class="">Grade Level</label>
                     </div>
                     <div class="col-md-3">
-                        <label for="initial-encore-level" class="">Initial Encore Level</label><input type="text"
-                            class="form-control" name="initial-encore-level" maxlength="3" id="initial-encore-level"
-                            title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)">
+                        <label for="initial-encore-level" class="">Initial Encore Level</label>
                     </div>
                     <div class="col-md-3">
-                        <label for="initial-goal" class="formbuilder-number-label">Initial Goal</label><input
-                            type="number" class="form-control" name="initial-goal" value="60" min="0" max="200" step="1"
-                            id="initial-goal" title="Student's initial goal, in words correct per minute">
+                        <label for="initial-goal" class="formbuilder-number-label">Initial Goal</label>
                     </div>
                     <div class="col-md-3">
                         <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement
-                            Range</label><input type="text" class="form-control" name="initial-placement-range"
+                            Range</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="grade-level" maxlength="2" id="grade-level"
+                            title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="initial-encore-level" maxlength="3"
+                            id="initial-encore-level" title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control" name="initial-goal" value="60" min="0" max="200"
+                            step="1" id="initial-goal" title="Student's initial goal, in words correct per minute">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="initial-placement-range"
                             id="initial-placement-range"
                             title="Student's initial placement range (calculated from initial level)" readonly
                             disabled="disabled">
                     </div>
                 </div>
-                <br>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-md-3">
+                        <label for="ct-1" class="">Cold Timing 1st Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ct-2" class="">Cold Timing 2nd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ct-3" class="">Cold Timing 3rd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ct-avg" class="formbuilder-number-label">Average Cold Timing</label>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-md-3">
-                        <label for="ct-1" class="">Cold Timing 1st Story</label><input type="number"
-                            class="form-control" name="ct-1" id="ct-1" value="60" min="0" max="500"
+                        <input type="number" class="form-control" name="ct-1" id="ct-1" value="60" min="0" max="500"
                             title="Cold Timing for first story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ct-2" class="">Cold Timing 2nd Story</label><input type="number"
-                            class="form-control" name="ct-2" id="ct-2" value="60" min="0" max="500"
+                        <input type="number" class="form-control" name="ct-2" id="ct-2" value="60" min="0" max="500"
                             title="Cold Timing for second story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ct-3" class="">Cold Timing 3rd Story</label><input type="number"
-                            class="form-control" name="ct-3" id="ct-3" value="60" min="0" max="500"
+                        <input type="number" class="form-control" name="ct-3" id="ct-3" value="60" min="0" max="500"
                             title="Cold Timing for third story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ct-avg" class="formbuilder-number-label">Average Cold Timing</label><input
-                            type="text" class="form-control" name="ct-avg" id="ct-avg"
+                        <input type="text" class="form-control" name="ct-avg" id="ct-avg"
                             title="Student's average cold timing (calculated from first three stories)" readonly
                             disabled="disabled">
                     </div>
                 </div>
-                <br>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-md-3">
+                        <label for="pr-1" class=""># Practices 1st Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="pr-2" class=""># Practices 2nd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="pr-3" class=""># Practices 3rd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="pr-avg" class="formbuilder-number-label">Average # Practices</label>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-md-3">
-                        <label for="pr-1" class=""># Practices 1st Story</label><input type="number"
-                            class="form-control" name="pr-1" id="pr-1" value="5" min="0" max="500"
+                        <input type="number" class="form-control" name="pr-1" id="pr-1" value="5" min="0" max="500"
                             title="Number of practices for first story">
                     </div>
                     <div class="col-md-3">
-                        <label for="pr-2" class=""># Practices 2nd Story</label><input type="number"
-                            class="form-control" name="pr-2" id="pr-2" value="5" min="0" max="500"
+                        <input type="number" class="form-control" name="pr-2" id="pr-2" value="5" min="0" max="500"
                             title="Number of practices for second story">
                     </div>
                     <div class="col-md-3">
-                        <label for="pr-3" class=""># Practices 3rd Story</label><input type="number"
-                            class="form-control" name="pr-3" id="pr-3" value="5" min="0" max="500"
+                        <input type="number" class="form-control" name="pr-3" id="pr-3" value="5" min="0" max="500"
                             title="Number of practices for third story">
                     </div>
                     <div class="col-md-3">
-                        <label for="pr-avg" class="formbuilder-number-label">Average # Practices</label><input
-                            type="text" class="form-control" name="pr-avg" id="pr-avg"
+                        <input type="text" class="form-control" name="pr-avg" id="pr-avg"
                             title="Student's average number of practices (calculated from first three stories)" readonly
                             disabled="disabled">
                     </div>
                 </div>
-                <br>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-md-3">
+                        <label for="ht-1" class="">Hot Timing 1st Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ht-2" class="">Hot Timing 2nd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ht-3" class="">Hot Timing 3rd Story</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ht-avg" class="formbuilder-number-label">Average Hot Timing</label>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-md-3">
-                        <label for="ht-1" class="">Hot Timing 1st Story</label><input type="number" class="form-control"
-                            name="ht-1" id="ht-1" value="100" min="0" max="500" title="Hot Timing for first story">
+                        <input type="number" class="form-control" name="ht-1" id="ht-1" value="100" min="0" max="500"
+                            title="Hot Timing for first story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ht-2" class="">Hot Timing 2nd Story</label><input type="number" class="form-control"
-                            name="ht-2" id="ht-2" value="100" min="0" max="500" title="Hot Timing for second story">
+                        <input type="number" class="form-control" name="ht-2" id="ht-2" value="100" min="0" max="500"
+                            title="Hot Timing for second story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ht-3" class="">Hot Timing 3rd Story</label><input type="number" class="form-control"
-                            name="ht-3" id="ht-3" value="100" min="0" max="500" title="Hot Timing for third story">
+                        <input type="number" class="form-control" name="ht-3" id="ht-3" value="100" min="0" max="500"
+                            title="Hot Timing for third story">
                     </div>
                     <div class="col-md-3">
-                        <label for="ht-avg" class="formbuilder-number-label">Average Hot Timing</label><input
-                            type="text" class="form-control" name="ht-avg" id="ht-avg"
+                        <input type="text" class="form-control" name="ht-avg" id="ht-avg"
                             title="Student's average hot timing (calculated from first three stories)" readonly
                             disabled="disabled">
                     </div>
                 </div>
-                <br>
-                <div class="form-row">
+
+                <div class="form-row pt-2 align-items-end">
                     <div class="col-md-4">
                         <label for="quiz-correct" class="">Quiz Correct Answers</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="quiz-total" class="">Quiz Questions in Story</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="quiz-percent" class="">Comprehension Quiz Score</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4">
                         <input type="number" class="form-control" name="quiz-correct" id="quiz-correct"
                             title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
                     </div>
                     <div class="col-md-4">
-                        <label for="quiz-total" class="">Quiz Questions in Story</label>
                         <input type="text" class="form-control" name="quiz-total" id="quiz-total"
                             title="Number of quiz questions in the level" value="" readonly disabled="disabled">
                     </div>
                     <div class="col-md-4">
-                        <label for="quiz-percent" class="">Comprehension Percent Correct</label>
                         <input type="text" class="form-control" name="quiz-percent" id="quiz-percent"
                             title="Percent of comprehension quiz questions answered correctly" value="" readonly
                             disabled="disabled">
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="pt-5">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-sm-3"></td>
+                        <td class="col-sm-3 table-primary text-center">Quiz 80% or higher</td>
+                        <td class="col-sm-3 table-primary text-center">Quiz 60% - 79%</td>
+                        <td class="col-sm-3 table-primary text-center">Quiz 59% or lower</td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">Average Cold Timing Higher than Initial Placement Range
+                        </td>
+                        <td style="width: 213.133px; text-align: center;">Raise level</td>
+                        <td style="width: 193px; text-align: center;">Continue level and provide comprehension support
+                        </td>
+                        <td style="width: 193px; text-align: center;">Lower level and provide comprehension support</td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">Average Cold Timing Within Initial Placement Range</td>
+                        <td style="width: 213.133px; text-align: center;">Continue level</td>
+                        <td style="width: 193px; text-align: center;">Continue level and provide comprehension support
+                        </td>
+                        <td style="width: 193px; text-align: center;">Lower level and provide comprehension support</td>
+                    </tr>
+                    <tr>
+                        <td class="table-primary text-right">Average Cold Timing Lower than Initial Placement Range</td>
+                        <td style="width: 213.133px; text-align: center;">Lower level</td>
+                        <td style="width: 193px; text-align: center;">Lower level and provide comprehension support</td>
+                        <td style="width: 193px; text-align: center;">Lower level and provide comprehension support</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
