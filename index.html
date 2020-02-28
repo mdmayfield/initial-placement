@@ -72,7 +72,7 @@
             [-1, -1, -1]
         ]
 
-        const hightlightClass = 'table-success';
+        const highlightClass = 'table-success';
 
         $(document).ready(initDocument);
 
@@ -80,36 +80,56 @@
             $('#initial-encore-series').on('input', () => {
                 updateAvailableLevels();
                 displayIPR();
-                highlightLevelCells();
+                updateQuizTotal();
+                updateQuizPercent();
+                updateRecommendations();
             });
 
             $('#initial-encore-level').on('input', () => {
                 displayIPR();
                 updateQuizTotal();
                 updateQuizPercent();
-                highlightLevelCells();
+                updateRecommendations();
             });
 
             $('#ct-1').on('input', () => {
                 calculateAvg('ct');
-                highlightLevelCells();
+                updateRecommendations();
             });
             $('#ct-2').on('input', () => {
                 calculateAvg('ct');
-                highlightLevelCells();
+                updateRecommendations();
             });
             $('#ct-3').on('input', () => {
                 calculateAvg('ct');
-                highlightLevelCells();
+                updateRecommendations();
             });
 
-            $('#pr-1').on('input', () => calculateAvg('pr'));
-            $('#pr-2').on('input', () => calculateAvg('pr'));
-            $('#pr-3').on('input', () => calculateAvg('pr'));
+            $('#pr-1').on('input', () => {
+                calculateAvg('pr');
+                updateRecommendations();
+            });
+            $('#pr-2').on('input', () => {
+                calculateAvg('pr');
+                updateRecommendations();
+            });
+            $('#pr-3').on('input', () => {
+                calculateAvg('pr');
+                updateRecommendations();
+            });
 
-            $('#ht-1').on('input', () => calculateAvg('ht'));
-            $('#ht-2').on('input', () => calculateAvg('ht'));
-            $('#ht-3').on('input', () => calculateAvg('ht'));
+            $('#ht-1').on('input', () => {
+                calculateAvg('ht');
+                updateRecommendations();
+            });
+            $('#ht-2').on('input', () => {
+                calculateAvg('ht');
+                updateRecommendations();
+            });
+            $('#ht-3').on('input', () => {
+                calculateAvg('ht');
+                updateRecommendations();
+            });
 
             $('#quiz-correct').on('input', updateQuizPercent);
 
@@ -138,7 +158,7 @@
             ['ct', 'pr', 'ht'].forEach((avg) => calculateAvg(avg));
             updateQuizTotal();
             updateQuizPercent();
-            highlightLevelCells();
+            updateRecommendations();
         }
 
         function updateAvailableLevels() {
@@ -231,7 +251,9 @@
             quizTotal.val(newNumQuestions);
             if (quizCorrect.val() > newNumQuestions) {
                 quizCorrect.val(newNumQuestions);
-                quizCorrect.attr({'max': newNumQuestions});
+                quizCorrect.attr({
+                    'max': newNumQuestions
+                });
             }
         }
 
@@ -249,16 +271,16 @@
                 style: 'percent'
             }));
 
-            highlightLevelCells();
+            updateRecommendations();
         }
 
-        function highlightLevelCells() {
+        function updateRecommendations() {
             const ipr = calculateIPR($('#initial-encore-level').val());
             const quizPercent = $('#quiz-percent').val().split('%')[0];
             const avgCT = $('#ct-avg').val();
 
-            let rows = $('#check-il tr');
-            $(rows).find('.' + hightlightClass).removeClass(hightlightClass);
+            let levelRows = $('#check-il tr');
+            $(levelRows).find('.' + highlightClass).removeClass(highlightClass);
             clearLevelRec();
 
             if (ipr.min === '' || ipr.max === '' || !$.isNumeric(quizPercent) || !$.isNumeric(avgCT)) return;
@@ -282,7 +304,7 @@
                 row = 3;
             }
 
-            $(rows[row]).find('td')[column].classList.add(hightlightClass);
+            $(levelRows[row]).find('td')[column].classList.add(highlightClass);
             makeLevelRec(row, column);
         }
 
@@ -329,10 +351,90 @@
             }
 
             $('#level-recommendation').text(recText);
+
+            calculateGoal(levelDirection);
         }
 
         function clearLevelRec() {
             $('#level-recommendation').text('');
+        }
+
+        function calculateGoal(levelDirection) {
+            if (levelDirection !== 0) {
+                $('#check-ig').hide();
+                $('#goal-recommendation').text(
+                    'Calculate a new goal for the student\'s new level. Start with the first ' +
+                    'Cold Timing score, then add 30 (for grades 1 - 4) or 40 (for grades 5+). '
+                );
+                return;
+            }
+
+            let goalRows = $('#check-ig tr');
+            $(goalRows).find('.' + highlightClass).removeClass(highlightClass);
+            clearGoalRec();
+            $('#check-ig').show();
+
+            //$(levelRows[row]).find('td')[column].classList.add(highlightClass);
+
+            let tooLowSigns = 0;
+            let apprSigns = 0;
+            let tooHighSigns = 0;
+
+            const ig = $('#initial-goal').val();
+            const grade = $('#grade-level').val();
+            const avgCT = $('#ct-avg').val();
+            const avgHT = $('#ht-avg').val();
+            const avgPr = $('#pr-avg').val();
+
+            $('#ig-act').html('Goal&nbsp;(' + ig + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + fmt(avgCT) + ') = ' +
+                fmt(ig - avgCT));
+            $('#aht-ig').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + fmt(avgHT) + ') - Goal&nbsp;(' + ig + ') = ' +
+                fmt(avgHT - ig));
+            $('#avgPr-table').text('Average # Practices (' + fmt(avgPr) + ')');
+
+            if (ig - avgCT <= (grade > 4 ? 35 : 25)) {
+                $(goalRows[1]).find('td')[1].classList.add(highlightClass);
+                tooLowSigns++;
+            } else if (ig - avgCT <= (grade > 4 ? 45 : 35)) {
+                $(goalRows[1]).find('td')[2].classList.add(highlightClass);
+                apprSigns++;
+            } else {
+                $(goalRows[1]).find('td')[3].classList.add(highlightClass);
+                tooHighSigns++;
+            }
+
+            if ((avgHT - ig) > 10) {
+                $(goalRows[2]).find('td')[1].classList.add(highlightClass);
+                tooLowSigns++;
+            } else if ((avgHT - ig) >= 0) {
+                $(goalRows[2]).find('td')[2].classList.add(highlightClass);
+                apprSigns++;
+            } else {
+                $(goalRows[2]).find('td')[3].classList.add(highlightClass);
+                tooHighSigns++;
+            }
+
+            if (avgPr < 3) {
+                $(goalRows[3]).find('td')[1].classList.add(highlightClass);
+                tooLowSigns++;
+            } else if (avgPr <= 10) {
+                $(goalRows[3]).find('td')[2].classList.add(highlightClass);
+                apprSigns++;
+            } else {
+                $(goalRows[3]).find('td')[3].classList.add(highlightClass);
+                tooHighSigns++;
+            }
+
+            $('#too-high-signs').text(tooHighSigns);
+            $('#appr-signs').text(apprSigns);
+            $('#too-low-signs').text(tooLowSigns);
+
+        }
+
+        function fmt(num) {
+            return Number(num).toLocaleString('en-US', {
+                maximumFractionDigits: 2,
+            })
         }
 
         function clearGoalRec() {
@@ -539,29 +641,27 @@
                 <tbody>
                     <tr>
                         <td class="col-sm-3"></td>
-                        <td class="col-sm-3 table-primary text-center">Goal is too low<br>Indicators: 
-                            <span id="too-high-signs"></span></td>
-                        <td class="col-sm-3 table-primary text-center">Goal is appropriate <br>Indicators: 
-                            <span id="appr-signs"></span></td>
-                        <td class="col-sm-3 table-primary text-center">Goal is too low <br>Indicators: 
+                        <td class="col-sm-3 table-primary text-center">Goal is too low<br>Indicators:
                             <span id="too-low-signs"></span></td>
+                        <td class="col-sm-3 table-primary text-center">Goal is appropriate <br>Indicators:
+                            <span id="appr-signs"></span></td>
+                        <td class="col-sm-3 table-primary text-center">Goal is too high <br>Indicators:
+                            <span id="too-high-signs"></span></td>
                     </tr>
                     <tr>
-                        <td class="table-primary text-right">(Goal) - (Average Cold Timing)<br>
-                            <span id='ig-act'>__ - __ = __</span></td>
+                        <td class="table-primary text-right" id='ig-act'>(Goal) - (Average Cold Timing)</td>
                         <td class="col-sm-3 text-center">Grades 1-4: 25 or less<br>Grades 5+: 35 or less</td>
                         <td class="col-sm-3 text-center">Grades 1-4: 26 - 35<br>Grades 5+: 36 - 45</td>
                         <td class="col-sm-3 text-center">Grades 1-4: 36 or more<br>Grades 5+: 46 or more</td>
                     </tr>
                     <tr>
-                        <td class="table-primary text-right">(Average Hot Timing) - (Goal)<br>
-                            <span id='aht-ig'>__ - __ = __</span></td>
+                        <td class="table-primary text-right" id='aht-ig'>(Average Hot Timing) - (Goal)</td>
                         <td class="col-sm-3 text-center">&gt; 10</td>
                         <td class="col-sm-3 text-center">0 - 10</td>
                         <td class="col-sm-3 text-center">&lt; 0</td>
                     </tr>
                     <tr>
-                        <td class="table-primary text-right">Average # Practices</td>
+                        <td class="table-primary text-right" id='avgPr-table'>Average # Practices</td>
                         <td class="col-sm-3 text-center">&lt; 3</td>
                         <td class="col-sm-3 text-center">3 - 10</td>
                         <td class="col-sm-3 text-center">&gt; 10</td>
