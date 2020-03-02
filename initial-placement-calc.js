@@ -73,14 +73,14 @@ function initDocument() {
 
     $('#initial-encore-series').on('input', () => {
         updateAvailableLevels();
-        displayIPR();
+        displayInitialPlacementRange();
         updateQuizTotal();
         updateQuizPercent();
         updateRecommendations();
     });
 
     $('#initial-encore-level').on('input', () => {
-        displayIPR();
+        displayInitialPlacementRange();
         updateQuizTotal();
         updateQuizPercent();
         updateRecommendations();
@@ -123,7 +123,7 @@ function calculateAvg(whatToAvg) {
 
 function recalculate() {
     updateAvailableLevels();
-    displayIPR();
+    displayInitialPlacementRange();
     ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
     updateQuizTotal();
     updateQuizPercent();
@@ -154,53 +154,52 @@ function updateAvailableLevels() {
 
 }
 
-function displayIPR() {
+function displayInitialPlacementRange() {
     const level = $('#initial-encore-level').val();
-    const iprTextBox = $('#initial-placement-range');
-    const ipr = calculateIPR(level);
+    const initialPlacementRange = calculatePlacementRange(level);
 
-    if (ipr.min === '' || ipr.max === '') {
-        iprTextBox.val('Need valid level');
+    if (initialPlacementRange.min === '' || initialPlacementRange.max === '') {
+        $('#initial-placement-range').val('Need valid level');
         return;
     }
 
-    iprTextBox.val(ipr.min + ' - ' + ipr.max);
+    $('#initial-placement-range').val(initialPlacementRange.min + ' - ' + initialPlacementRange.max);
 }
 
-function calculateIPR(level) {
+function calculatePlacementRange(level) {
 
-    let ipr = {
+    let placementRange = {
         'min': '',
         'max': ''
     };
 
     if (!($.isNumeric(level))) {
-        ipr.min = '';
-        ipr.max = '';
-        return ipr;
+        placementRange.min = '';
+        placementRange.max = '';
+        return placementRange;
     }
 
     if (Number(level) < 3.5) {
-        ipr.min = 30;
-        ipr.max = 60;
-        return ipr;
+        placementRange.min = 30;
+        placementRange.max = 60;
+        return placementRange;
     }
 
     if (Number(level) < 5.6) {
-        ipr.min = 60;
-        ipr.max = 80;
-        return ipr;
+        placementRange.min = 60;
+        placementRange.max = 80;
+        return placementRange;
     }
 
     if (Number(level) < 8.0) {
-        ipr.min = 80;
-        ipr.max = 100;
-        return ipr;
+        placementRange.min = 80;
+        placementRange.max = 100;
+        return placementRange;
     }
 
-    ipr.min = 100;
-    ipr.max = 140;
-    return ipr;
+    placementRange.min = 100;
+    placementRange.max = 140;
+    return placementRange;
 }
 
 function updateQuizTotal() {
@@ -235,24 +234,21 @@ function updateQuizPercent() {
         return;
     }
 
-    $('#quiz-percent').val((quizCorrect / quizTotal).toLocaleString('en-US', {
-        maximumFractionDigits: 2,
-        style: 'percent'
-    }));
+    $('#quiz-percent').val(formatNumberTwoDecimals(quizCorrect / quizTotal * 100) + '%');
 
     updateRecommendations();
 }
 
 function updateRecommendations() {
-    const ipr = calculateIPR($('#initial-encore-level').val());
+    const initialPlacementRange = calculatePlacementRange($('#initial-encore-level').val());
     const quizPercent = $('#quiz-percent').val().split('%')[0];
-    const avgCT = $('#cold-timing-average').val();
+    const avgColdTiming = $('#cold-timing-average').val();
 
     let levelRows = $('#check-il tr');
     $(levelRows).find('.' + highlightClass).removeClass(highlightClass);
-    clearLevelRec();
+    clearLevelRecommendation();
 
-    if (ipr.min === '' || ipr.max === '' || !$.isNumeric(quizPercent) || !$.isNumeric(avgCT)) return;
+    if (initialPlacementRange.min === '' || initialPlacementRange.max === '' || !$.isNumeric(quizPercent) || !$.isNumeric(avgColdTiming)) return;
 
     let row;
     let column;
@@ -265,9 +261,9 @@ function updateRecommendations() {
         column = 3;
     }
 
-    if (avgCT > ipr.max) {
+    if (avgColdTiming > initialPlacementRange.max) {
         row = 1;
-    } else if (avgCT >= ipr.min) {
+    } else if (avgColdTiming >= initialPlacementRange.min) {
         row = 2;
     } else {
         row = 3;
@@ -281,7 +277,7 @@ function makeLevelRec(row, column) {
     const level = $('#initial-encore-level').val();
     const series = $('#initial-encore-series').val();
     let levelDirection = recommendationChart[row - 1][column - 1];
-    let recText = '';
+    let levelRecommendation = '';
 
     if (levelDirection < 0) {
         const newLevel = lowerLevelRecommendations[level];
@@ -289,16 +285,16 @@ function makeLevelRec(row, column) {
         if (newLevel === level) {
             levelDirection = 0;
         } else {
-            recText = 'Lower level to ' + newLevel;
+            levelRecommendation = 'Lower level to ' + newLevel;
             if (column > 1) {
-                recText += (series === 'pho' ? ', ' : ' and ');
-                recText += 'provide comprehension support';
+                levelRecommendation += (series === 'pho' ? ', ' : ' and ');
+                levelRecommendation += 'provide comprehension support';
             }
             if (series === 'pho') {
-                recText += (column > 1 ? ', and ' : ' and ');
-                recText += 'provide separate phonics support';
+                levelRecommendation += (column > 1 ? ', and ' : ' and ');
+                levelRecommendation += 'provide separate phonics support';
             }
-            recText += '.';
+            levelRecommendation += '.';
         }
     }
 
@@ -308,23 +304,23 @@ function makeLevelRec(row, column) {
         if (newLevel === level) {
             levelDirection = 0;
         } else {
-            recText = 'Raise level to ' + newLevel + '.';
+            levelRecommendation = 'Raise level to ' + newLevel + '.';
             if (series === 'pho') {
-                recText += ' If appropriate, provide separate phonics support.';
+                levelRecommendation += ' If appropriate, provide separate phonics support.';
             }
         }
     }
 
     if (levelDirection === 0) {
-        recText = 'Continue level ' + level + (column > 1 ? ' and provide comprehension support.' : '.');
+        levelRecommendation = 'Continue level ' + level + (column > 1 ? ' and provide comprehension support.' : '.');
     }
 
-    $('#level-recommendation').text(recText);
+    $('#level-recommendation').text(levelRecommendation);
 
     calculateGoal(levelDirection);
 }
 
-function clearLevelRec() {
+function clearLevelRecommendation() {
     $('#level-recommendation').text('');
 }
 
@@ -332,86 +328,86 @@ function calculateGoal(levelDirection) {
 
     let goalRows = $('#check-ig tr');
     $(goalRows).find('.' + highlightClass).removeClass(highlightClass);
-    clearGoalRec();
+    clearGoalRecommendation();
 
     if (levelDirection !== 0) {
         $('#goal-recommendation').text(
             'Calculate a new goal for the student\'s new level. After the student completes the first ' +
-            'Cold Timing, take that score, then add 30 (for grades 1 - 4) or 40 (for grades 5+) and round ' +
-            'down to the nearest five. '
+            'Cold Timing in the new level, take that score, then add 30 (for grades 1 - 4) or 40 ' +
+            '(for grades 5+) and round down to the nearest five. '
         );
         $('#too-high-signs').text('N/A');
         $('#appr-signs').text('N/A');
         $('#too-low-signs').text('N/A');
         return;
     }
-    let tooLowSigns = 0;
-    let apprSigns = 0;
-    let tooHighSigns = 0;
+    let levelTooLowSigns = 0;
+    let levelAppropriateSigns = 0;
+    let levelTooHighSigns = 0;
 
-    const ig = $('#initial-goal').val();
+    const initialGoal = $('#initial-goal').val();
     const grade = $('#grade-level').val();
-    const avgCT = $('#cold-timing-average').val();
-    const avgHT = $('#hot-timing-average').val();
-    const avgPr = $('#num-practices-average').val();
+    const avgColdTiming = $('#cold-timing-average').val();
+    const avgHotTiming = $('#hot-timing-average').val();
+    const avgNumPractices = $('#num-practices-average').val();
 
-    $('#ig-act').html('Goal&nbsp;(' + ig + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + fmt(avgCT) + ') = ' +
-        fmt(ig - avgCT));
-    $('#aht-ig').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + fmt(avgHT) + ') - Goal&nbsp;(' + ig + ') = ' +
-        fmt(avgHT - ig));
-    $('#avgPr-table').text('Average # Practices (' + fmt(avgPr) + ')');
+    $('#ig-act').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgColdTiming) + ') = ' +
+        formatNumberTwoDecimals(initialGoal - avgColdTiming));
+    $('#aht-ig').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) + ') - Goal&nbsp;(' + initialGoal + ') = ' +
+        formatNumberTwoDecimals(avgHotTiming - initialGoal));
+    $('#avgPr-table').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
 
-    if (ig - avgCT <= (grade > 4 ? 35 : 25)) {
+    if (initialGoal - avgColdTiming <= (grade > 4 ? 35 : 25)) {
         $(goalRows[1]).find('td')[1].classList.add(highlightClass);
-        tooLowSigns++;
-    } else if (ig - avgCT <= (grade > 4 ? 45 : 35)) {
+        levelTooLowSigns++;
+    } else if (initialGoal - avgColdTiming <= (grade > 4 ? 45 : 35)) {
         $(goalRows[1]).find('td')[2].classList.add(highlightClass);
-        apprSigns++;
+        levelAppropriateSigns++;
     } else {
         $(goalRows[1]).find('td')[3].classList.add(highlightClass);
-        tooHighSigns++;
+        levelTooHighSigns++;
     }
 
-    if ((avgHT - ig) > 10) {
+    if ((avgHotTiming - initialGoal) > 10) {
         $(goalRows[2]).find('td')[1].classList.add(highlightClass);
-        tooLowSigns++;
-    } else if ((avgHT - ig) >= 0) {
+        levelTooLowSigns++;
+    } else if ((avgHotTiming - initialGoal) >= 0) {
         $(goalRows[2]).find('td')[2].classList.add(highlightClass);
-        apprSigns++;
+        levelAppropriateSigns++;
     } else {
         $(goalRows[2]).find('td')[3].classList.add(highlightClass);
-        tooHighSigns++;
+        levelTooHighSigns++;
     }
 
-    if (avgPr < 3) {
+    if (avgNumPractices < 3) {
         $(goalRows[3]).find('td')[1].classList.add(highlightClass);
-        tooLowSigns++;
-    } else if (avgPr <= 10) {
+        levelTooLowSigns++;
+    } else if (avgNumPractices <= 10) {
         $(goalRows[3]).find('td')[2].classList.add(highlightClass);
-        apprSigns++;
+        levelAppropriateSigns++;
     } else {
         $(goalRows[3]).find('td')[3].classList.add(highlightClass);
-        tooHighSigns++;
+        levelTooHighSigns++;
     }
 
-    $('#too-high-signs').text(tooHighSigns);
-    $('#appr-signs').text(apprSigns);
-    $('#too-low-signs').text(tooLowSigns);
+    $('#too-high-signs').text(levelTooHighSigns);
+    $('#appr-signs').text(levelAppropriateSigns);
+    $('#too-low-signs').text(levelTooLowSigns);
 
-    updateGoalRec(tooLowSigns, apprSigns, tooHighSigns);
+    updateGoalRec(levelTooLowSigns, levelAppropriateSigns, levelTooHighSigns);
 }
 
-function fmt(num) {
+function formatNumberTwoDecimals(num) {
     return Number(num).toLocaleString('en-US', {
         maximumFractionDigits: 2,
     })
 }
 
 function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
-    const goalRecSpan = $('#goal-recommendation');
+    const goalRecommendationSpan = $('#goal-recommendation');
 
     if ((tooLowSigns + apprSigns + tooHighSigns) !== 3) {
-        goalRecSpan.text(
+        goalRecommendationSpan.text(
             'An error occurred calculating the goal recommendation (indicators must add up to 3).');
         return;
     }
@@ -430,18 +426,18 @@ function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
     //   0        0       3      Lower
     //
     // This boils down to some very simple arithmetic:
-    $('#goal-recommendation').text(makeGoalRecString(tooHighSigns - tooLowSigns));
+    $('#goal-recommendation').text(makeGoalRecommendationString(tooHighSigns - tooLowSigns));
 }
 
-function makeGoalRecString(goalVector) {
-    let goalRecString = '';
+function makeGoalRecommendationString(goalVector) {
+    let goalRecommendation = '';
     let grade = $('#grade-level option:selected').val();
     const initialGoal = $('#initial-goal').val();
-    const adjustAmt = (grade > 4) ? 40 : 30;
-    const avgCT = Number($('#cold-timing-average').val());
-    const avgHT = Number($('#hot-timing-average').val());
-    const adjustedCT = avgCT + adjustAmt;
-    const roundedGoal = Math.floor((avgCT + adjustAmt) / 5) * 5
+    const adjustAmount = (grade > 4) ? 40 : 30;
+    const avgColdTiming = Number($('#cold-timing-average').val());
+    const avgHotTiming = Number($('#hot-timing-average').val());
+    const adjustedColdTiming = avgColdTiming + adjustAmount;
+    const roundedGoal = Math.floor((avgColdTiming + adjustAmount) / 5) * 5
 
     if (grade === 'K' || grade < 5) {
         grade = '4 or lower';
@@ -450,11 +446,11 @@ function makeGoalRecString(goalVector) {
     }
 
     if (goalVector < -1) {
-        goalRecString = 'Raise the student\'s goal. To ';
+        goalRecommendation = 'Raise the student\'s goal. To ';
     }
 
     if (goalVector === -1) {
-        goalRecString =
+        goalRecommendation =
             'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, to ';
     }
 
@@ -463,34 +459,34 @@ function makeGoalRecString(goalVector) {
     }
 
     if (goalVector === 1) {
-        goalRecString =
+        goalRecommendation =
             'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, to ';
     }
 
     if (goalVector > 1) {
-        goalRecString = 'Lower the student\'s goal. To ';
+        goalRecommendation = 'Lower the student\'s goal. To ';
     }
 
-    goalRecString += 'calculate a new goal for a student in grade ' + grade + ', add ' + adjustAmt +
-        ' to the Average Cold Timing and round down to the nearest five: ' + fmt(avgCT) + ' + ' + adjustAmt +
-        ' = ' + adjustedCT;
+    goalRecommendation += 'calculate a new goal for a student in grade ' + grade + ', add ' + adjustAmount +
+        ' to the Average Cold Timing and round down to the nearest five: ' + formatNumberTwoDecimals(avgColdTiming) + ' + ' + adjustAmount +
+        ' = ' + adjustedColdTiming;
 
-    if (adjustedCT !== roundedGoal) {
-        goalRecString += ', rounded down = ' + roundedGoal + '. '
+    if (adjustedColdTiming !== roundedGoal) {
+        goalRecommendation += ', rounded down = ' + roundedGoal + '. '
     } else {
-        goalRecString += '. ';
+        goalRecommendation += '. ';
     }
 
-    if (roundedGoal > avgHT) {
-        goalRecString += 'However, the new goal should not exceed the average hot timing, so in this case ' +
-            'we would recommend a goal of ' + (Math.floor(avgHT / 5) * 5) + ' instead. ';
+    if (roundedGoal > avgHotTiming) {
+        goalRecommendation += 'However, the new goal should not exceed the average hot timing, so in this case ' +
+            'we would recommend a goal of ' + (Math.floor(avgHotTiming / 5) * 5) + ' instead. ';
     }
 
-    goalRecString += 'Recheck the goal after the next three stories.';
+    goalRecommendation += 'Recheck the goal after the next three stories.';
 
-    return goalRecString;
+    return goalRecommendation;
 }
 
-function clearGoalRec() {
+function clearGoalRecommendation() {
     $('#goal-recommendation').text('');
 }
