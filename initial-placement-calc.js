@@ -322,8 +322,8 @@ function calculateGoal(levelDirection) {
     if (levelDirection !== 0) {
         $('#goal-recommendation').text(
             'Calculate a new goal for the student\'s new level. After the student completes the first ' +
-            'Cold Timing in the new level, take that score, then add 30 (for grades 1 - 4) or 40 ' +
-            '(for grades 5+) and round down to the nearest five. '
+            'Cold Timing in the new level, take that score, then add 30 (for grades 4 and lower) or 40 ' +
+            '(for grades 5 and higher) and round down to the nearest five. '
         );
         $('#goal-too-high-signs').text('N/A');
         $('#goal-appropriate-signs').text('N/A');
