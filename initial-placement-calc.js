@@ -258,14 +258,17 @@ function updateRecommendations() {
         row = 3;
     }
 
+    // Highlight the appropriate cell in the level calculations chart
     $(levelRows[row]).find('td')[column].classList.add(highlightClass);
-    makeLevelRec(row, column);
+
+    const levelDirection = recommendationChart[row - 1][column - 1];
+    makeLevelRec(levelDirection, column);
+    makeGoalRec(levelDirection);
 }
 
-function makeLevelRec(row, column) {
+function makeLevelRec(levelDirection, column) {
     const level = $('#initial-encore-level').val();
     const series = $('#initial-encore-series').val();
-    let levelDirection = recommendationChart[row - 1][column - 1];
     let levelRecommendation = '';
 
     if (levelDirection < 0) {
@@ -306,14 +309,13 @@ function makeLevelRec(row, column) {
 
     $('#level-recommendation').text(levelRecommendation);
 
-    calculateGoal(levelDirection);
 }
 
 function clearLevelRecommendation() {
     $('#level-recommendation').text('');
 }
 
-function calculateGoal(levelDirection) {
+function makeGoalRec(levelDirection) {
 
     let goalRows = $('#check-ig tr');
     $(goalRows).find('.' + highlightClass).removeClass(highlightClass);
