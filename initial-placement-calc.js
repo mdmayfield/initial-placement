@@ -150,8 +150,6 @@ function updateAvailableLevels() {
             return (Math.abs(curr - oldLevel) < Math.abs(prev - oldLevel) ? curr : prev);
         }));
     }
-
-
 }
 
 function displayInitialPlacementRange() {
@@ -176,29 +174,20 @@ function calculatePlacementRange(level) {
     if (!($.isNumeric(level))) {
         placementRange.min = '';
         placementRange.max = '';
-        return placementRange;
-    }
-
-    if (Number(level) < 3.5) {
+    } else if (Number(level) < 3.5) {
         placementRange.min = 30;
         placementRange.max = 60;
-        return placementRange;
-    }
-
-    if (Number(level) < 5.6) {
+    } else if (Number(level) < 5.6) {
         placementRange.min = 60;
         placementRange.max = 80;
-        return placementRange;
-    }
-
-    if (Number(level) < 8.0) {
+    } else if (Number(level) < 8.0) {
         placementRange.min = 80;
         placementRange.max = 100;
-        return placementRange;
+    } else {
+        placementRange.min = 100;
+        placementRange.max = 140;
     }
 
-    placementRange.min = 100;
-    placementRange.max = 140;
     return placementRange;
 }
 
@@ -351,11 +340,11 @@ function calculateGoal(levelDirection) {
     const avgHotTiming = $('#hot-timing-average').val();
     const avgNumPractices = $('#num-practices-average').val();
 
-    $('#ig-act').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgColdTiming) + ') = ' +
-        formatNumberTwoDecimals(initialGoal - avgColdTiming));
-    $('#aht-ig').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) + ') - Goal&nbsp;(' + initialGoal + ') = ' +
-        formatNumberTwoDecimals(avgHotTiming - initialGoal));
-    $('#avgPr-table').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
+    $('#goal-minus-cold-timing').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + 
+        formatNumberTwoDecimals(avgColdTiming) + ') = ' + formatNumberTwoDecimals(initialGoal - avgColdTiming));
+    $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) +
+        ') - Goal&nbsp;(' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
+    $('#average-num-practices').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
 
     if (initialGoal - avgColdTiming <= (grade > 4 ? 35 : 25)) {
         $(goalRows[1]).find('td')[1].classList.add(highlightClass);
