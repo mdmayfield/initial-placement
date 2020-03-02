@@ -73,14 +73,14 @@ function initDocument() {
 
     $('#initial-encore-series').on('input', () => {
         updateAvailableLevels();
-        displayInitialPlacementRange();
+        updateInitialPlacementRange();
         updateQuizTotal();
         updateQuizPercent();
         updateRecommendations();
     });
 
     $('#initial-encore-level').on('input', () => {
-        displayInitialPlacementRange();
+        updateInitialPlacementRange();
         updateQuizTotal();
         updateQuizPercent();
         updateRecommendations();
@@ -123,7 +123,7 @@ function calculateAvg(whatToAvg) {
 
 function recalculate() {
     updateAvailableLevels();
-    displayInitialPlacementRange();
+    updateInitialPlacementRange();
     ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
     updateQuizTotal();
     updateQuizPercent();
@@ -152,7 +152,7 @@ function updateAvailableLevels() {
     }
 }
 
-function displayInitialPlacementRange() {
+function updateInitialPlacementRange() {
     const level = $('#initial-encore-level').val();
     const initialPlacementRange = calculatePlacementRange(level);
 
