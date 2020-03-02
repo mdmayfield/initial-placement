@@ -77,6 +77,10 @@
         $(document).ready(initDocument);
 
         function initDocument() {
+            $('#grade-level').on('input', () => {
+                updateRecommendations();
+            });
+
             $('#initial-encore-series').on('input', () => {
                 updateAvailableLevels();
                 displayIPR();
@@ -89,6 +93,10 @@
                 displayIPR();
                 updateQuizTotal();
                 updateQuizPercent();
+                updateRecommendations();
+            });
+
+            $('#initial-goal').on('input', () => {
                 updateRecommendations();
             });
 
@@ -360,22 +368,21 @@
         }
 
         function calculateGoal(levelDirection) {
-            if (levelDirection !== 0) {
-                $('#check-ig').hide();
-                $('#goal-recommendation').text(
-                    'Calculate a new goal for the student\'s new level. Start with the first ' +
-                    'Cold Timing score, then add 30 (for grades 1 - 4) or 40 (for grades 5+). '
-                );
-                return;
-            }
 
             let goalRows = $('#check-ig tr');
             $(goalRows).find('.' + highlightClass).removeClass(highlightClass);
             clearGoalRec();
-            $('#check-ig').show();
 
-            //$(levelRows[row]).find('td')[column].classList.add(highlightClass);
-
+            if (levelDirection !== 0) {
+                $('#goal-recommendation').text(
+                    'Calculate a new goal for the student\'s new level. Start with the first ' +
+                    'Cold Timing score, then add 30 (for grades 1 - 4) or 40 (for grades 5+). '
+                );
+                $('#too-high-signs').text('N/A');
+                $('#appr-signs').text('N/A');
+                $('#too-low-signs').text('N/A');
+                return;
+            }
             let tooLowSigns = 0;
             let apprSigns = 0;
             let tooHighSigns = 0;
