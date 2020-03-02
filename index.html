@@ -436,12 +436,92 @@
             $('#appr-signs').text(apprSigns);
             $('#too-low-signs').text(tooLowSigns);
 
+            updateGoalRec(tooLowSigns, apprSigns, tooHighSigns);
         }
 
         function fmt(num) {
             return Number(num).toLocaleString('en-US', {
                 maximumFractionDigits: 2,
             })
+        }
+
+        function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
+            const goalRecSpan = $('#goal-recommendation');
+
+            if ((tooLowSigns + apprSigns + tooHighSigns) !== 3) {
+                goalRecSpan.text(
+                'An error occurred calculating the goal recommendation (indicators must add up to 3).');
+                return;
+            }
+
+            // Goal Adjustment:
+            // TooLow   Appr   TooHigh   Action
+            //   3        0       0      Raise
+            //   2        1       0      Raise
+            //   2        0       1      Continue or raise
+            //   1        2       0      Continue or raise
+            //   0        3       0      Continue
+            //   1        1       1      Continue
+            //   0        2       1      Continue or lower
+            //   1        0       2      Continue or lower
+            //   0        1       2      Lower
+            //   0        0       3      Lower
+            //
+            // This boils down to some very simple arithmetic:
+
+            $('#goal-recommendation').text(makeGoalRecString(-tooLowSigns + tooHighSigns));
+        }
+
+        function makeGoalRecString(goalVector) {
+            let goalRecString = '';
+            const grade = $('#grade-level option:selected').val();
+            const initialGoal = $('#initial-goal').val();
+            const adjustAmt = (grade > 4) ? 40 : 30;
+            const avgCT = Number($('#ct-avg').val());
+            const avgHT = Number($('#ht-avg').val());
+            const adjustedCT = avgCT + adjustAmt;
+            const roundedGoal = Math.floor((avgCT + adjustAmt) / 5) * 5
+
+            if (goalVector > 1) {
+                goalRecString = 'Raise the student\'s goal. To ';
+            }
+
+            if (goalVector === 1) {
+                goalRecString =
+                    'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, to ';
+            }
+
+            if (goalVector === 0) {
+                return 'Continue the student\'s current goal of ' + initialGoal + '.';
+            }
+
+            if (goalVector === -1) {
+                goalRecString =
+                    'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, to ';
+            }
+
+            if (goalVector < -1) {
+                goalRecString = 'Lower the student\'s goal. To ';
+            }
+
+            goalRecString += 'calculate a new goal for a student in grade ' + grade + ', add ' + adjustAmt +
+                ' to the Average Cold Timing and round down to the nearest five: ' + fmt(avgCT) + ' + ' + adjustAmt +
+                ' = ' + adjustedCT;
+
+            if (adjustedCT !== roundedGoal) {
+                goalRecString += ', rounded down = ' + roundedGoal + '. '
+            } else {
+                goalRecString += '. ';
+            }
+
+            if (roundedGoal > avgHT) {
+                goalRecString += 'However, the new goal should not exceed the average hot timing, so in this case ' +
+                    'we recommend a goal of ' + (Math.floor(avgHT / 5) * 5) + ' instead. ';
+            }
+
+            goalRecString += 'Recheck the goal after the next three stories.';
+
+            return goalRecString;
         }
 
         function clearGoalRec() {
@@ -616,7 +696,8 @@
                         <td class="col-sm-3 table-primary text-center">Quiz 59% or lower</td>
                     </tr>
                     <tr>
-                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Higher than Initial Placement Range
+                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Higher than Initial Placement
+                            Range
                         </td>
                         <td class="col-sm-3 text-center">Raise level</td>
                         <td class="col-sm-3 text-center">Continue level and provide comprehension support
@@ -624,14 +705,16 @@
                         <td class="col-sm-3 text-center">Lower level and provide comprehension support</td>
                     </tr>
                     <tr>
-                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Within Initial Placement Range</td>
+                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Within Initial Placement Range
+                        </td>
                         <td class="col-sm-3 text-center">Continue level</td>
                         <td class="col-sm-3 text-center">Continue level and provide comprehension support
                         </td>
                         <td class="col-sm-3 text-center">Lower level and provide comprehension support</td>
                     </tr>
                     <tr>
-                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Lower than Initial Placement Range</td>
+                        <td class="col-sm-3 table-primary text-right">Average Cold Timing Lower than Initial Placement
+                            Range</td>
                         <td class="col-sm-3 text-center">Lower level</td>
                         <td class="col-sm-3 text-center">Lower level and provide comprehension support</td>
                         <td class="col-sm-3 text-center">Lower level and provide comprehension support</td>
