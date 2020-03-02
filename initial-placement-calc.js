@@ -340,7 +340,7 @@ function calculateGoal(levelDirection) {
     const avgHotTiming = $('#hot-timing-average').val();
     const avgNumPractices = $('#num-practices-average').val();
 
-    $('#goal-minus-cold-timing').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + 
+    $('#goal-minus-cold-timing').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' +
         formatNumberTwoDecimals(avgColdTiming) + ') = ' + formatNumberTwoDecimals(initialGoal - avgColdTiming));
     $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) +
         ') - Goal&nbsp;(' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
@@ -420,7 +420,8 @@ function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
 
 function makeGoalRecommendationString(goalVector) {
     let goalRecommendation = '';
-    let grade = $('#grade-level option:selected').val();
+    let gradePhrase = '';
+    const grade = $('#grade-level option:selected').val();
     const initialGoal = $('#initial-goal').val();
     const adjustAmount = (grade > 4) ? 40 : 30;
     const avgColdTiming = Number($('#cold-timing-average').val());
@@ -429,18 +430,18 @@ function makeGoalRecommendationString(goalVector) {
     const roundedGoal = Math.floor((avgColdTiming + adjustAmount) / 5) * 5
 
     if (grade === 'K' || grade < 5) {
-        grade = '4 or lower';
+        gradePhrase = 'grade 4 or lower';
     } else {
-        grade = '5 or higher';
+        gradePhrase = 'grade 5 or higher';
     }
 
     if (goalVector < -1) {
-        goalRecommendation = 'Raise the student\'s goal. To ';
+        goalRecommendation = 'Raise the student\'s goal. Add ';
     }
 
     if (goalVector === -1) {
         goalRecommendation =
-            'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, to ';
+            'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, add ';
     }
 
     if (goalVector === 0) {
@@ -449,16 +450,16 @@ function makeGoalRecommendationString(goalVector) {
 
     if (goalVector === 1) {
         goalRecommendation =
-            'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, to ';
+            'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, add ';
     }
 
     if (goalVector > 1) {
-        goalRecommendation = 'Lower the student\'s goal. To ';
+        goalRecommendation = 'Lower the student\'s goal. Add ';
     }
 
-    goalRecommendation += 'calculate a new goal for a student in grade ' + grade + ', add ' + adjustAmount +
-        ' to the Average Cold Timing and round down to the nearest five: ' + formatNumberTwoDecimals(avgColdTiming) + ' + ' + adjustAmount +
-        ' = ' + adjustedColdTiming;
+    goalRecommendation += adjustAmount + ' (for a student in ' + gradePhrase + ')' + ' to the Average Cold Timing ' +
+        'and round down to the nearest five: ' + formatNumberTwoDecimals(avgColdTiming) + ' + ' + adjustAmount + ' = ' +
+        adjustedColdTiming;
 
     if (adjustedColdTiming !== roundedGoal) {
         goalRecommendation += ', rounded down = ' + roundedGoal + '. '
