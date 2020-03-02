@@ -474,13 +474,19 @@
 
         function makeGoalRecString(goalVector) {
             let goalRecString = '';
-            const grade = $('#grade-level option:selected').val();
+            let grade = $('#grade-level option:selected').val();
             const initialGoal = $('#initial-goal').val();
             const adjustAmt = (grade > 4) ? 40 : 30;
             const avgCT = Number($('#ct-avg').val());
             const avgHT = Number($('#ht-avg').val());
             const adjustedCT = avgCT + adjustAmt;
             const roundedGoal = Math.floor((avgCT + adjustAmt) / 5) * 5
+
+            if (grade === 'K' || grade < 5) {
+                grade = '4 or lower';
+            } else {
+                grade = '5 or higher';
+            }
 
             if (goalVector > 1) {
                 goalRecString = 'Raise the student\'s goal. To ';
