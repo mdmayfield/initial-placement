@@ -91,7 +91,7 @@ function initDocument() {
     });
 
     // Live-updating averages for cold timing, practices, hot timing - 3 fields each
-    ['ct', 'pr', 'ht'].forEach((category) => {
+    ['cold-timing', 'num-practices', 'hot-timing'].forEach((category) => {
         [1, 2, 3].forEach((number) => {
             $('#' + category + '-' + number).on('input', () => {
                 calculateAvg(category);
@@ -109,7 +109,7 @@ function calculateAvg(whatToAvg) {
     const av1 = Number($('#' + whatToAvg + '-1').val());
     const av2 = Number($('#' + whatToAvg + '-2').val());
     const av3 = Number($('#' + whatToAvg + '-3').val());
-    const avg = $('#' + whatToAvg + '-avg');
+    const avg = $('#' + whatToAvg + '-average');
 
     if (av1 === 0 || av2 === 0 || av3 === 0) {
         avg.val('Need 3 entries');
@@ -124,7 +124,7 @@ function calculateAvg(whatToAvg) {
 function recalculate() {
     updateAvailableLevels();
     displayIPR();
-    ['ct', 'pr', 'ht'].forEach((avg) => calculateAvg(avg));
+    ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
     updateQuizTotal();
     updateQuizPercent();
     updateRecommendations();
@@ -246,7 +246,7 @@ function updateQuizPercent() {
 function updateRecommendations() {
     const ipr = calculateIPR($('#initial-encore-level').val());
     const quizPercent = $('#quiz-percent').val().split('%')[0];
-    const avgCT = $('#ct-avg').val();
+    const avgCT = $('#cold-timing-average').val();
 
     let levelRows = $('#check-il tr');
     $(levelRows).find('.' + highlightClass).removeClass(highlightClass);
@@ -351,9 +351,9 @@ function calculateGoal(levelDirection) {
 
     const ig = $('#initial-goal').val();
     const grade = $('#grade-level').val();
-    const avgCT = $('#ct-avg').val();
-    const avgHT = $('#ht-avg').val();
-    const avgPr = $('#pr-avg').val();
+    const avgCT = $('#cold-timing-average').val();
+    const avgHT = $('#hot-timing-average').val();
+    const avgPr = $('#num-practices-average').val();
 
     $('#ig-act').html('Goal&nbsp;(' + ig + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' + fmt(avgCT) + ') = ' +
         fmt(ig - avgCT));
@@ -430,7 +430,6 @@ function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
     //   0        0       3      Lower
     //
     // This boils down to some very simple arithmetic:
-
     $('#goal-recommendation').text(makeGoalRecString(tooHighSigns - tooLowSigns));
 }
 
@@ -439,8 +438,8 @@ function makeGoalRecString(goalVector) {
     let grade = $('#grade-level option:selected').val();
     const initialGoal = $('#initial-goal').val();
     const adjustAmt = (grade > 4) ? 40 : 30;
-    const avgCT = Number($('#ct-avg').val());
-    const avgHT = Number($('#ht-avg').val());
+    const avgCT = Number($('#cold-timing-average').val());
+    const avgHT = Number($('#hot-timing-average').val());
     const adjustedCT = avgCT + adjustAmt;
     const roundedGoal = Math.floor((avgCT + adjustAmt) / 5) * 5
 
