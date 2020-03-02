@@ -167,6 +167,7 @@
             updateQuizTotal();
             updateQuizPercent();
             updateRecommendations();
+            updateQuizTotal();
         }
 
         function updateAvailableLevels() {
@@ -259,10 +260,9 @@
             quizTotal.val(newNumQuestions);
             if (quizCorrect.val() > newNumQuestions) {
                 quizCorrect.val(newNumQuestions);
-                quizCorrect.attr({
-                    'max': newNumQuestions
-                });
             }
+
+            quizCorrect.attr('max', newNumQuestions);
         }
 
         function updateQuizPercent() {
