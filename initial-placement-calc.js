@@ -478,4 +478,7 @@ function makeGoalRecommendationString(goalVector) {
 
 function clearGoalRecommendation() {
     $('#goal-recommendation').text('');
+    $('#goal-minus-cold-timing').html('Initial&nbsp;Goal minus Average&nbsp;Cold&nbsp;Timing');
+    $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing minus Initial&nbsp;Goal');
+    $('#average-num-practices').html('Average #&nbsp;Practices');
 }
