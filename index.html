@@ -375,8 +375,9 @@
 
             if (levelDirection !== 0) {
                 $('#goal-recommendation').text(
-                    'Calculate a new goal for the student\'s new level. Start with the first ' +
-                    'Cold Timing score, then add 30 (for grades 1 - 4) or 40 (for grades 5+). '
+                    'Calculate a new goal for the student\'s new level. After the student completes the first ' +
+                    'Cold Timing, take that score, then add 30 (for grades 1 - 4) or 40 (for grades 5+) and round ' +
+                    'down to the nearest five. '
                 );
                 $('#too-high-signs').text('N/A');
                 $('#appr-signs').text('N/A');
@@ -469,7 +470,7 @@
             //
             // This boils down to some very simple arithmetic:
 
-            $('#goal-recommendation').text(makeGoalRecString(-tooLowSigns + tooHighSigns));
+            $('#goal-recommendation').text(makeGoalRecString(tooHighSigns - tooLowSigns));
         }
 
         function makeGoalRecString(goalVector) {
@@ -488,11 +489,11 @@
                 grade = '5 or higher';
             }
 
-            if (goalVector > 1) {
+            if (goalVector < -1) {
                 goalRecString = 'Raise the student\'s goal. To ';
             }
 
-            if (goalVector === 1) {
+            if (goalVector === -1) {
                 goalRecString =
                     'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, to ';
             }
@@ -501,12 +502,12 @@
                 return 'Continue the student\'s current goal of ' + initialGoal + '.';
             }
 
-            if (goalVector === -1) {
+            if (goalVector === 1) {
                 goalRecString =
                     'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, to ';
             }
 
-            if (goalVector < -1) {
+            if (goalVector > 1) {
                 goalRecString = 'Lower the student\'s goal. To ';
             }
 
@@ -522,7 +523,7 @@
 
             if (roundedGoal > avgHT) {
                 goalRecString += 'However, the new goal should not exceed the average hot timing, so in this case ' +
-                    'we recommend a goal of ' + (Math.floor(avgHT / 5) * 5) + ' instead. ';
+                    'we would recommend a goal of ' + (Math.floor(avgHT / 5) * 5) + ' instead. ';
             }
 
             goalRecString += 'Recheck the goal after the next three stories.';
