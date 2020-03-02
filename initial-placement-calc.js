@@ -336,9 +336,9 @@ function calculateGoal(levelDirection) {
             'Cold Timing in the new level, take that score, then add 30 (for grades 1 - 4) or 40 ' +
             '(for grades 5+) and round down to the nearest five. '
         );
-        $('#too-high-signs').text('N/A');
-        $('#appr-signs').text('N/A');
-        $('#too-low-signs').text('N/A');
+        $('#goal-too-high-signs').text('N/A');
+        $('#goal-appropriate-signs').text('N/A');
+        $('#goal-too-low-signs').text('N/A');
         return;
     }
     let levelTooLowSigns = 0;
@@ -390,9 +390,9 @@ function calculateGoal(levelDirection) {
         levelTooHighSigns++;
     }
 
-    $('#too-high-signs').text(levelTooHighSigns);
-    $('#appr-signs').text(levelAppropriateSigns);
-    $('#too-low-signs').text(levelTooLowSigns);
+    $('#goal-too-high-signs').text(levelTooHighSigns);
+    $('#goal-appropriate-signs').text(levelAppropriateSigns);
+    $('#goal-too-low-signs').text(levelTooLowSigns);
 
     updateGoalRec(levelTooLowSigns, levelAppropriateSigns, levelTooHighSigns);
 }
