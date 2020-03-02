@@ -90,43 +90,14 @@ function initDocument() {
         updateRecommendations();
     });
 
-    $('#ct-1').on('input', () => {
-        calculateAvg('ct');
-        updateRecommendations();
-    });
-    $('#ct-2').on('input', () => {
-        calculateAvg('ct');
-        updateRecommendations();
-    });
-    $('#ct-3').on('input', () => {
-        calculateAvg('ct');
-        updateRecommendations();
-    });
-
-    $('#pr-1').on('input', () => {
-        calculateAvg('pr');
-        updateRecommendations();
-    });
-    $('#pr-2').on('input', () => {
-        calculateAvg('pr');
-        updateRecommendations();
-    });
-    $('#pr-3').on('input', () => {
-        calculateAvg('pr');
-        updateRecommendations();
-    });
-
-    $('#ht-1').on('input', () => {
-        calculateAvg('ht');
-        updateRecommendations();
-    });
-    $('#ht-2').on('input', () => {
-        calculateAvg('ht');
-        updateRecommendations();
-    });
-    $('#ht-3').on('input', () => {
-        calculateAvg('ht');
-        updateRecommendations();
+    // Live-updating averages for cold timing, practices, hot timing - 3 fields each
+    ['ct', 'pr', 'ht'].forEach((category) => {
+        [1, 2, 3].forEach((number) => {
+            $('#' + category + '-' + number).on('input', () => {
+                calculateAvg(category);
+                updateRecommendations();
+            });
+        });
     });
 
     $('#quiz-correct').on('input', updateQuizPercent);
