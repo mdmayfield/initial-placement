@@ -262,11 +262,12 @@ function updateRecommendations() {
     $(levelRows[row]).find('td')[column].classList.add(highlightClass);
 
     const levelDirection = recommendationChart[row - 1][column - 1];
-    makeLevelRec(levelDirection, column);
+    const needComprehensionSupport = (column > 1);
+    makeLevelRec(levelDirection, needComprehensionSupport);
     makeGoalRec(levelDirection);
 }
 
-function makeLevelRec(levelDirection, column) {
+function makeLevelRec(levelDirection, needComprehensionSupport) {
     const level = $('#initial-encore-level').val();
     const series = $('#initial-encore-series').val();
     let levelRecommendation = '';
@@ -278,12 +279,12 @@ function makeLevelRec(levelDirection, column) {
             levelDirection = 0;
         } else {
             levelRecommendation = 'Lower level to ' + newLevel;
-            if (column > 1) {
+            if (needComprehensionSupport) {
                 levelRecommendation += (series === 'pho' ? ', ' : ' and ');
                 levelRecommendation += 'provide comprehension support';
             }
             if (series === 'pho') {
-                levelRecommendation += (column > 1 ? ', and ' : ' and ');
+                levelRecommendation += (needComprehensionSupport ? ', and ' : ' and ');
                 levelRecommendation += 'provide separate phonics support';
             }
             levelRecommendation += '.';
@@ -304,7 +305,7 @@ function makeLevelRec(levelDirection, column) {
     }
 
     if (levelDirection === 0) {
-        levelRecommendation = 'Continue level ' + level + (column > 1 ? ' and provide comprehension support.' : '.');
+        levelRecommendation = 'Continue level ' + level + (needComprehensionSupport ? ' and provide comprehension support.' : '.');
     }
 
     $('#level-recommendation').text(levelRecommendation);
