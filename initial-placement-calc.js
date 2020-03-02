@@ -340,10 +340,10 @@ function calculateGoal(levelDirection) {
     const avgHotTiming = $('#hot-timing-average').val();
     const avgNumPractices = $('#num-practices-average').val();
 
-    $('#goal-minus-cold-timing').html('Goal&nbsp;(' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' +
+    $('#goal-minus-cold-timing').html('Initial&nbsp;Goal (' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' +
         formatNumberTwoDecimals(avgColdTiming) + ') = ' + formatNumberTwoDecimals(initialGoal - avgColdTiming));
     $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) +
-        ') - Goal&nbsp;(' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
+        ') - Initial&nbsp;Goal (' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
     $('#average-num-practices').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
 
     if (initialGoal - avgColdTiming <= (grade > 4 ? 35 : 25)) {
@@ -479,7 +479,7 @@ function makeGoalRecommendationString(goalVector) {
 
 function clearGoalRecommendation() {
     $('#goal-recommendation').text('');
-    $('#goal-minus-cold-timing').html('Initial&nbsp;Goal minus Average&nbsp;Cold&nbsp;Timing');
-    $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing minus Initial&nbsp;Goal');
+    $('#goal-minus-cold-timing').html('Initial&nbsp;Goal - Average&nbsp;Cold&nbsp;Timing');
+    $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing - Initial&nbsp;Goal');
     $('#average-num-practices').html('Average #&nbsp;Practices');
 }
