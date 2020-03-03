@@ -100,23 +100,26 @@ function initDocument() {
         });
     });
 
-    $('#quiz-correct').on('input', updateQuizPercent);
+    $('#quiz-correct').on('input', () => {
+        updateQuizPercent();
+        updateRecommendations();
+    });
 
     recalculate();
 }
 
 function calculateAvg(whatToAvg) {
-    const av1 = Number($('#' + whatToAvg + '-1').val());
-    const av2 = Number($('#' + whatToAvg + '-2').val());
-    const av3 = Number($('#' + whatToAvg + '-3').val());
+    const num1 = Number($('#' + whatToAvg + '-1').val());
+    const num2 = Number($('#' + whatToAvg + '-2').val());
+    const num3 = Number($('#' + whatToAvg + '-3').val());
     const avg = $('#' + whatToAvg + '-average');
 
-    if (av1 === 0 || av2 === 0 || av3 === 0) {
+    if (num1 === 0 || num2 === 0 || num3 === 0) {
         avg.val('Need 3 entries');
         return;
     }
 
-    avg.val(Number((av1 + av2 + av3) / 3).toLocaleString('en-US', {
+    avg.val(Number((num1 + num2 + num3) / 3).toLocaleString('en-US', {
         maximumFractionDigits: 2
     }));
 }
@@ -224,8 +227,6 @@ function updateQuizPercent() {
     }
 
     $('#quiz-percent').val(formatNumberTwoDecimals(quizCorrect / quizTotal * 100) + '%');
-
-    updateRecommendations();
 }
 
 function updateRecommendations() {
