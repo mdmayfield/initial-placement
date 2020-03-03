@@ -275,7 +275,8 @@ function makeLevelRec(levelDirection, needComprehensionSupport) {
     if (levelDirection < 0) {
         const newLevel = lowerLevelRecommendations[level];
 
-        if (newLevel === level) {
+        // Use == here because we want type conversion as needed
+        if (newLevel == level) {
             levelDirection = 0;
         } else {
             levelRecommendation = 'Lower level to ' + newLevel;
@@ -294,7 +295,8 @@ function makeLevelRec(levelDirection, needComprehensionSupport) {
     if (levelDirection > 0) {
         const newLevel = raiseLevelRecommendations[level];
 
-        if (newLevel === level) {
+        // Use == here because we want type conversion as needed
+        if (newLevel == level) {
             levelDirection = 0;
         } else {
             levelRecommendation = 'Raise level to ' + newLevel + '.';
