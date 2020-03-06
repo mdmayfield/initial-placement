@@ -119,9 +119,7 @@ function calculateAvg(whatToAvg) {
         return;
     }
 
-    avg.val(Number((num1 + num2 + num3) / 3).toLocaleString('en-US', {
-        maximumFractionDigits: 2
-    }));
+    avg.val(formatNumberTwoDecimals(Number((num1 + num2 + num3) / 3)));
 }
 
 function recalculate() {
