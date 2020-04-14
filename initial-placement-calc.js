@@ -62,7 +62,7 @@ const recommendationChart = [
     [-1, -1, -1]
 ]
 
-const highlightClass = 'table-success';
+const highlightClass = ['table-success', 'font-weight-bold'];
 
 $(document).ready(initDocument);
 
@@ -239,7 +239,7 @@ function updateRecommendations() {
     const avgColdTiming = $('#cold-timing-average').val();
 
     let levelRows = $('#check-il tr');
-    $(levelRows).find('.' + highlightClass).removeClass(highlightClass);
+    $(levelRows).find('*').removeClass(highlightClass);
     clearLevelRecommendation();
 
     if (initialPlacementRange.min === '' || initialPlacementRange.max === '' || !$.isNumeric(quizPercent) || !$.isNumeric(avgColdTiming)) return;
@@ -264,7 +264,7 @@ function updateRecommendations() {
     }
 
     // Highlight the appropriate cell in the level calculations chart
-    $(levelRows[row]).find('td')[column].classList.add(highlightClass);
+    $($(levelRows[row]).find('td')[column]).addClass(highlightClass);
 
     const levelDirection = recommendationChart[row - 1][column - 1];
     const needComprehensionSupport = (column > 1);
@@ -326,7 +326,7 @@ function clearLevelRecommendation() {
 function makeGoalRec(levelDirection) {
 
     let goalRows = $('#check-ig tr');
-    $(goalRows).find('.' + highlightClass).removeClass(highlightClass);
+    $(goalRows).find('*').removeClass(highlightClass);
     clearGoalRecommendation();
 
     if (levelDirection !== 0) {
@@ -357,13 +357,13 @@ function makeGoalRec(levelDirection) {
     $('#average-num-practices').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
 
     if (initialGoal - avgColdTiming <= (grade > 4 ? 35 : 25)) {
-        $(goalRows[1]).find('td')[1].classList.add(highlightClass);
+        $($(goalRows[1]).find('td')[1]).addClass(highlightClass);
         levelTooLowSigns++;
     } else if (initialGoal - avgColdTiming <= (grade > 4 ? 45 : 35)) {
-        $(goalRows[1]).find('td')[2].classList.add(highlightClass);
+        $($(goalRows[1]).find('td')[2]).addClass(highlightClass);
         levelAppropriateSigns++;
     } else {
-        $(goalRows[1]).find('td')[3].classList.add(highlightClass);
+        $($(goalRows[1]).find('td')[3]).addClass(highlightClass);
         levelTooHighSigns++;
     }
 
@@ -371,21 +371,21 @@ function makeGoalRec(levelDirection) {
         $(goalRows[2]).find('td')[1].classList.add(highlightClass);
         levelTooLowSigns++;
     } else if ((avgHotTiming - initialGoal) >= 0) {
-        $(goalRows[2]).find('td')[2].classList.add(highlightClass);
+        $($(goalRows[2]).find('td')[2]).addClass(highlightClass);
         levelAppropriateSigns++;
     } else {
-        $(goalRows[2]).find('td')[3].classList.add(highlightClass);
+        $($(goalRows[2]).find('td')[3]).addClass(highlightClass);
         levelTooHighSigns++;
     }
 
     if (avgNumPractices < 3) {
-        $(goalRows[3]).find('td')[1].classList.add(highlightClass);
+        $($(goalRows[3]).find('td')[1]).addClass(highlightClass);
         levelTooLowSigns++;
     } else if (avgNumPractices <= 10) {
-        $(goalRows[3]).find('td')[2].classList.add(highlightClass);
+        $($(goalRows[3]).find('td')[2]).addClass(highlightClass);
         levelAppropriateSigns++;
     } else {
-        $(goalRows[3]).find('td')[3].classList.add(highlightClass);
+        $($(goalRows[3]).find('td')[3]).addClass(highlightClass);
         levelTooHighSigns++;
     }
 
