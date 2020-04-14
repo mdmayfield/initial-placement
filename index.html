@@ -23,6 +23,10 @@
         <h1 class="text-center">Checking Initial Placement</h1>
         <div class="pt-3">
             <form id="student-info">
+                <div class="form-row pt-2">
+                    <label for="name-notes" class="col-2 text-right">Name (optional)</label>
+                    <input id="name-notes" class="col-10">
+                </div>
                 <div class="form-row pt-2 align-items-end">
                     <div class="col-2">
                         <label for="grade-level" class="">Grade</label>
@@ -148,18 +152,28 @@
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-4">
-                        <label for="quiz-correct" class="">Quiz Correct Answers</label>
-                        <input type="number" class="form-control" name="quiz-correct" id="quiz-correct"
+                    <div class="col-2">
+                        <label for="quiz-correct1" class="">Quiz Correct 1st Story</label>
+                        <input type="number" class="form-control" name="quiz-correct1" id="quiz-correct1"
                             title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
                     </div>
-                    <div class="col-4">
-                        <label for="quiz-total" class="">Quiz Questions in Story</label>
+                    <div class="col-2">
+                        <label for="quiz-correct2" class="">Quiz Correct 2nd Story</label>
+                        <input type="number" class="form-control" name="quiz-correct2" id="quiz-correct2"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                    </div>
+                    <div class="col-2">
+                        <label for="quiz-correct3" class="">Quiz Correct 3rd Story</label>
+                        <input type="number" class="form-control" name="quiz-correct3" id="quiz-correct3"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                    </div>
+                    <div class="col-3">
+                        <label for="quiz-total" class="">Possible Correct per Quiz</label>
                         <input type="text" class="form-control" name="quiz-total" id="quiz-total"
                             title="Number of quiz questions in the level" value="" readonly disabled="disabled">
                     </div>
-                    <div class="col-4">
-                        <label for="quiz-percent" class="">Comprehension Quiz Score</label>
+                    <div class="col-3">
+                        <label for="quiz-percent" class="">Average of Last 3 Quiz Scores</label>
                         <input type="text" class="form-control" name="quiz-percent" id="quiz-percent"
                             title="Percent of comprehension quiz questions answered correctly" value="" readonly
                             disabled="disabled">

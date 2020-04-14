@@ -100,10 +100,12 @@ function initDocument() {
         });
     });
 
-    $('#quiz-correct').on('input', () => {
-        updateQuizPercent();
-        updateRecommendations();
-    });
+    [1, 2, 3].forEach((number) => {
+        $('#quiz-correct' + number).on('input', () => {
+            updateQuizPercent();
+            updateRecommendations();
+        });
+    })
 
     recalculate();
 }
@@ -196,7 +198,6 @@ function updateQuizTotal() {
     const level = $('#initial-encore-level').val();
     const series = $('#initial-encore-series').val();
     const quizTotal = $('#quiz-total');
-    const quizCorrect = $('#quiz-correct');
 
     if (!validLevels.hasOwnProperty(series) ||
         !validLevels[series].includes(level)) {
@@ -208,16 +209,21 @@ function updateQuizTotal() {
     let newNumQuestions = numQuizQuestions[series][index];
 
     quizTotal.val(newNumQuestions);
-    if (quizCorrect.val() > newNumQuestions) {
-        quizCorrect.val(newNumQuestions);
-    }
 
-    quizCorrect.attr('max', newNumQuestions);
+    [1, 2, 3].forEach((number) => {
+        let quizCorrect = $('#quiz-correct' + number);
+        if (quizCorrect.val() > newNumQuestions) {
+            quizCorrect.val(newNumQuestions);
+        }
+        quizCorrect.attr('max', newNumQuestions);
+    });
 }
 
 function updateQuizPercent() {
     const quizTotal = Number($('#quiz-total').val());
-    const quizCorrect = Number($('#quiz-correct').val());
+    const quizCorrect = (Number($('#quiz-correct1').val()) +
+                         Number($('#quiz-correct2').val()) +
+                         Number($('#quiz-correct3').val())) / 3.0;
 
     if (!(quizTotal > 0)) {
         $('#quiz-percent').val('---');
