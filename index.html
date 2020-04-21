@@ -11,7 +11,7 @@
     <script src="bootstrap.min.js"></script>
     <script src="initial-placement-calc.js"></script>
 
-    <title>Checking Initial Placement</title>
+    <title>Encore II Checking Initial Placement</title>
 
     <link rel="stylesheet" href="bootstrap.min.css">
 
@@ -35,16 +35,21 @@
 <body>
 
     <div class="container">
-        <h1 class="text-center">Checking Initial Placement</h1>
+        <h1 class="text-center">Encore 𝐈𝐈: Checking Initial Placement</h1>
+        <div class="pt-2">
+            <p><strong>Instructions:</strong> Enter the information for this student's three most-recent stories.
+                Use the TAB key to move to the next field, and Shift-TAB to go back. You can also use the UP and
+                DOWN arrow keys to increase or decrease the values.</p>
+        </div>
         <div class="pt-3">
             <form id="student-info">
                 <div class="form-row pt-2">
-                    <label for="name-notes" class="col-2 text-right">Name (optional)</label>
+                    <label for="name-notes" class="col-2 text-center">Name (optional)</label>
                     <input id="name-notes" class="col-10">
                 </div>
                 <div class="form-row pt-2 align-items-end">
                     <div class="col-2">
-                        <label for="grade-level" class="">Grade</label>
+                        <label for="grade-level" class="col text-center">Grade</label>
                         <select class="form-control" name="grade-level" id="grade-level"
                             title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)">
                             <option value="K">K</option>
@@ -64,7 +69,7 @@
                         </select>
                     </div>
                     <div class="col-2">
-                        <label for="initial-encore-series" class="">Encore Series</label>
+                        <label for="initial-encore-series" class="col text-center">Series</label>
                         <select class="form-control" name="initial-encore-series" id="initial-encore-series"
                             title="Student's initial series in Encore (i.e. Sequenced, Phonics, Idioms)">
                             <option value='seq' selected>Sequenced</option>
@@ -73,20 +78,25 @@
                         </select>
                     </div>
                     <div class="col-2">
-                        <label for="initial-encore-level" class="">Encore Level</label>
+                        <label for="initial-encore-level" class="col text-center">Initial Level</label>
                         <select class="form-control" name="initial-encore-level" id="initial-encore-level"
                             title="Student's initial level in Encore (i.e. 1.0, 1.5, ...)">
                             <option value=''></option>
                         </select>
                     </div>
-                    <div class="col-3">
-                        <label for="initial-goal" class="formbuilder-number-label">Initial Goal</label>
+                    <div class="col-2">
+                        <label for="initial-goal" class="col text-center">Initial Goal</label>
                         <input type="number" class="form-control" name="initial-goal" value="60" min="0" max="200"
                             step="1" id="initial-goal" title="Student's initial goal, in words correct per minute">
                     </div>
-                    <div class="col-3">
-                        <label for="initial-placement-range" class="formbuilder-number-label">Initial Placement
-                            Range</label>
+                    <div class="col-2">
+                        <label for="total-stories-completed" class="col text-center">Stories Completed in Level</label>
+                        <input type="number" class="form-control" name="total-stories-completed"
+                            id="total-stories-completed" value="3" min="0" max="24"
+                            title="The total number of stories the student has completed in this level so far">
+                    </div>
+                    <div class="col-2">
+                        <label for="initial-placement-range" class="col text-center">Initial Placement Range</label>
                         <input type="text" class="form-control" name="initial-placement-range"
                             id="initial-placement-range"
                             title="Student's initial placement range (calculated from initial level)" readonly
@@ -94,12 +104,12 @@
                     </div>
                 </div>
 
-                <div class="form-row pt-2 align-items-end">
+                <div class="form-row pt-5 align-items-end">
                     <div class="col-3"></div>
-                    <div class="col-2"><h5>3rd Most Recent Story</h5></div>
-                    <div class="col-2"><h5>2nd Most Recent Story</h5></div>
-                    <div class="col-2"><h5>Most Recent Story</h5></div>
-                    <div class="col-3"><h5>Average</h5></div>
+                    <div class="col-2 text-center"><h6>3rd-most Recent</h6></div>
+                    <div class="col-2 text-center"><h6>2nd-most Recent</h6></div>
+                    <div class="col-2 text-center"><h6>Most Recent Story</h6></div>
+                    <div class="col-3 text-center"><h6>Average of Last 3 Stories</h6></div>
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
@@ -124,7 +134,7 @@
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-3 text-right"><h6># of Practices</h6></div>
+                    <div class="col-3 text-right"><h6>Number of Practices</h6></div>
                     <div class="col-2">
                         <input type="number" class="form-control" name="num-practices-1" id="num-practices-1" value="5"
                             min="0" max="500" title="Number of practices for 3rd most recent story">
@@ -166,7 +176,7 @@
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-1 col-md-2 text-right"><h6>Quiz out of</h6></div>
+                    <div class="col-1 col-md-2 text-right"><h6>Quiz Correct Out of</h6></div>
                     <div class="col-2 col-md-1">
                         <input type="text" class="form-control" name="quiz-total" id="quiz-total"
                             title="Number of quiz questions in the level" value="" readonly disabled="disabled">
@@ -198,7 +208,7 @@
             <p><span id="goal-recommendation"></span></p>
         </div>
         <details>
-            <summary>Calculation Details</summary>
+            <summary>Calculation Details (click to show/hide)</summary>
             <div class="pt-3">
                 <table class="table table-bordered" id="check-il">
                     <tbody>
@@ -273,7 +283,7 @@
             </div>
         </details>
         <details>
-            <summary>Privacy Information</summary>
+            <summary>Privacy Information (click to show/hide)</summary>
             <p>This calculator does not send data to Read Naturally or anyplace else. All calculations
                 are done locally, inside your browser. No student data from this calculator is stored anywhere,
                 except temporarily in your own browser on your own device.
