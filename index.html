@@ -15,6 +15,21 @@
 
     <link rel="stylesheet" href="bootstrap.min.css">
 
+    <style>
+        /**** Hide Number Input Arrows ****/
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -80,31 +95,28 @@
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-2"></div>
-                    <div class="col-3"><h5>3rd Most Recent Story</h5></div>
-                    <div class="col-3"><h5>2nd Most Recent Story</h5></div>
-                    <div class="col-3"><h5>Most Recent Story</h5></div>
-                    <div class="col-1"><h5>Average</h5></div>
+                    <div class="col-3"></div>
+                    <div class="col-2"><h5>3rd Most Recent Story</h5></div>
+                    <div class="col-2"><h5>2nd Most Recent Story</h5></div>
+                    <div class="col-2"><h5>Most Recent Story</h5></div>
+                    <div class="col-3"><h5>Average</h5></div>
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-3">
-                        <label for="cold-timing-1" class="">Cold Timing 1st Story</label>
+                    <div class="col-3 text-right"><h6>Cold Timing</h6></div>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="cold-timing-1" id="cold-timing-1" value="60"
-                            min="0" max="500" title="Cold Timing for first story">
+                            min="0" max="500" title="Cold Timing for 3rd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="cold-timing-2" class="">Cold Timing 2nd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="cold-timing-2" id="cold-timing-2" value="60"
-                            min="0" max="500" title="Cold Timing for second story">
+                            min="0" max="500" title="Cold Timing for 2nd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="cold-timing-3" class="">Cold Timing 3rd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="cold-timing-3" id="cold-timing-3" value="60"
-                            min="0" max="500" title="Cold Timing for third story">
+                            min="0" max="500" title="Cold Timing for most recent story">
                     </div>
                     <div class="col-3">
-                        <label for="cold-timing-average" class="formbuilder-number-label">Average Cold Timing</label>
                         <input type="text" class="form-control" name="cold-timing-average" id="cold-timing-average"
                             title="Student's average cold timing (calculated from first three stories)" readonly
                             disabled="disabled">
@@ -112,76 +124,66 @@
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-3">
-                        <label for="num-practices-1" class=""># Practices 1st Story</label>
+                    <div class="col-3 text-right"><h6># of Practices</h6></div>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="num-practices-1" id="num-practices-1" value="5"
-                            min="0" max="500" title="Number of practices for first story">
+                            min="0" max="500" title="Number of practices for 3rd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="num-practices-2" class=""># Practices 2nd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="num-practices-2" id="num-practices-2" value="5"
-                            min="0" max="500" title="Number of practices for second story">
+                            min="0" max="500" title="Number of practices for 2nd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="num-practices-3" class=""># Practices 3rd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="num-practices-3" id="num-practices-3" value="5"
-                            min="0" max="500" title="Number of practices for third story">
+                            min="0" max="500" title="Number of practices for most recent story">
                     </div>
                     <div class="col-3">
-                        <label for="num-practices-average" class="formbuilder-number-label">Average # Practices</label>
                         <input type="text" class="form-control" name="num-practices-average" id="num-practices-average"
-                            title="Student's average number of practices (calculated from first three stories)" readonly
+                            title="Student's average number of practices (calculated from most recent three stories)" readonly
                             disabled="disabled">
                     </div>
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-3">
-                        <label for="hot-timing-1" class="">Hot Timing 1st Story</label>
+                    <div class="col-3 text-right"><h6>Hot Timing</h6></div>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="hot-timing-1" id="hot-timing-1" value="100"
-                            min="0" max="500" title="Hot Timing for first story">
+                            min="0" max="500" title="Hot Timing for 3rd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="hot-timing-2" class="">Hot Timing 2nd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="hot-timing-2" id="hot-timing-2" value="100"
-                            min="0" max="500" title="Hot Timing for second story">
+                            min="0" max="500" title="Hot Timing for 2nd most recent story">
                     </div>
-                    <div class="col-3">
-                        <label for="hot-timing-3" class="">Hot Timing 3rd Story</label>
+                    <div class="col-2">
                         <input type="number" class="form-control" name="hot-timing-3" id="hot-timing-3" value="100"
-                            min="0" max="500" title="Hot Timing for third story">
+                            min="0" max="500" title="Hot Timing for most recent story">
                     </div>
                     <div class="col-3">
-                        <label for="hot-timing-average" class="formbuilder-number-label">Average Hot Timing</label>
                         <input type="text" class="form-control" name="hot-timing-average" id="hot-timing-average"
-                            title="Student's average hot timing (calculated from first three stories)" readonly
+                            title="Student's average hot timing (calculated from most recent three stories)" readonly
                             disabled="disabled">
                     </div>
                 </div>
 
                 <div class="form-row pt-2 align-items-end">
-                    <div class="col-3">
-                        <label for="quiz-correct1" class="">3rd Most Recent Quiz Score</label>
-                        <input type="number" class="form-control" name="quiz-correct1" id="quiz-correct1"
-                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
-                    </div>
-                    <div class="col-3">
-                        <label for="quiz-correct2" class="">2nd Most Recent Quiz Score</label>
-                        <input type="number" class="form-control" name="quiz-correct2" id="quiz-correct2"
-                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
-                    </div>
-                    <div class="col-3">
-                        <label for="quiz-correct3" class="">Most Recent Quiz Score</label>
-                        <input type="number" class="form-control" name="quiz-correct3" id="quiz-correct3"
-                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
-                    </div>
-                    <div class="col-1">
-                        <label for="quiz-total" class="">Possible</label>
+                    <div class="col-1 col-md-2 text-right"><h6>Quiz out of</h6></div>
+                    <div class="col-2 col-md-1">
                         <input type="text" class="form-control" name="quiz-total" id="quiz-total"
                             title="Number of quiz questions in the level" value="" readonly disabled="disabled">
                     </div>
                     <div class="col-2">
-                        <label for="quiz-percent" class="">Average Correct</label>
+                        <input type="number" class="form-control" name="quiz-correct1" id="quiz-correct1"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="quiz-correct2" id="quiz-correct2"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="quiz-correct3" id="quiz-correct3"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9">
+                    </div>
+                    <div class="col-3">
                         <input type="text" class="form-control" name="quiz-percent" id="quiz-percent"
                             title="Percent of comprehension quiz questions answered correctly" value="" readonly
                             disabled="disabled">

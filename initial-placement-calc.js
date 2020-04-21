@@ -117,7 +117,7 @@ function calculateAvg(whatToAvg) {
     const avg = $('#' + whatToAvg + '-average');
 
     if (num1 === 0 || num2 === 0 || num3 === 0) {
-        avg.val('Need 3 entries');
+        avg.val('??');
         return;
     }
 
@@ -160,7 +160,7 @@ function updateInitialPlacementRange() {
     const initialPlacementRange = calculatePlacementRange(level);
 
     if (initialPlacementRange.min === '' || initialPlacementRange.max === '') {
-        $('#initial-placement-range').val('Need valid level');
+        $('#initial-placement-range').val('??');
         return;
     }
 
@@ -201,7 +201,7 @@ function updateQuizTotal() {
 
     if (!validLevels.hasOwnProperty(series) ||
         !validLevels[series].includes(level)) {
-        quizTotal.val('Need valid level');
+        quizTotal.val('??');
         return;
     }
 
