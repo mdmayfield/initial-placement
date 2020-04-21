@@ -330,10 +330,13 @@ function makeGoalRec(levelDirection) {
     clearGoalRecommendation();
 
     if (levelDirection !== 0) {
-        $('#goal-recommendation').text(
+        $('#advanced-goal-recommendation').text(
             'Calculate a new goal for the student\'s new level. After the student completes the first ' +
             'Cold Timing in the new level, take that score, then add 30 (for grades 4 and lower) or 40 ' +
             '(for grades 5 and higher) and round down to the nearest five. '
+        );
+        $('#goal-recommendation').text(
+            'Calculate a new goal from the first Cold Timing in the new level.'
         );
         $('#goal-too-high-signs').text('N/A');
         $('#goal-appropriate-signs').text('N/A');
@@ -368,7 +371,7 @@ function makeGoalRec(levelDirection) {
     }
 
     if ((avgHotTiming - initialGoal) > 10) {
-        $(goalRows[2]).find('td')[1].classList.add(highlightClass);
+        $($(goalRows[2]).find('td')[1]).addClass(highlightClass);
         levelTooLowSigns++;
     } else if ((avgHotTiming - initialGoal) >= 0) {
         $($(goalRows[2]).find('td')[2]).addClass(highlightClass);
@@ -403,14 +406,7 @@ function formatNumberTwoDecimals(num) {
 }
 
 function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
-    const goalRecommendationSpan = $('#goal-recommendation');
-
-    if ((tooLowSigns + apprSigns + tooHighSigns) !== 3) {
-        goalRecommendationSpan.text(
-            'An error occurred calculating the goal recommendation (indicators must add up to 3).');
-        return;
-    }
-
+    let recommendationStrings;
     // Goal Adjustment:
     // TooLow   Appr   TooHigh   Action
     //   3        0       0      Raise
@@ -425,19 +421,57 @@ function updateGoalRec(tooLowSigns, apprSigns, tooHighSigns) {
     //   0        0       3      Lower
     //
     // This boils down to some very simple arithmetic:
-    $('#goal-recommendation').text(makeGoalRecommendationString(tooHighSigns - tooLowSigns));
+    const goalVector = tooHighSigns - tooLowSigns;
+
+    if ((tooLowSigns + apprSigns + tooHighSigns) !== 3) {
+        goalRecommendationSpan.text(
+            'An error occurred calculating the goal recommendation (indicators must add up to 3).');
+        return;
+    }
+
+    recommendationStrings = makeGoalRecommendationStrings(goalVector);
+    $('#goal-recommendation').text(recommendationStrings[0]);
+    $('#advanced-goal-recommendation').text(recommendationStrings[1]);
 }
 
-function makeGoalRecommendationString(goalVector) {
+function makeGoalRecommendationStrings(goalVector) {
     let goalRecommendation = '';
+    let advancedGoalRecommendation = '';
     let gradePhrase = '';
+    let addPhrase = '';
+    const recheckPhrase = 'Recheck the goal after the next three stories.'
     const grade = $('#grade-level option:selected').val();
     const initialGoal = $('#initial-goal').val();
     const adjustAmount = (grade > 4) ? 40 : 30;
     const avgColdTiming = Number($('#cold-timing-average').val());
     const avgHotTiming = Number($('#hot-timing-average').val());
     const adjustedColdTiming = avgColdTiming + adjustAmount;
-    const roundedGoal = Math.floor((avgColdTiming + adjustAmount) / 5) * 5
+    let roundedGoal = Math.floor((avgColdTiming + adjustAmount) / 5) * 5
+
+    if (goalVector < -1) {
+        goalRecommendation = 'Raise the student\'s goal to ';
+        addPhrase = 'Raise the student\'s goal. Add ';
+    }
+
+    if (goalVector === -1) {
+        goalRecommendation = 'Based on what you know of the student, continue the current goal or raise to ';
+            addPhrase = 'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, add ';
+    }
+
+    if (goalVector === 0 || roundedGoal === initialGoal) {
+        const returnPhrase = 'Continue the student\'s current goal of ' + initialGoal + '.';
+        return [ returnPhrase, returnPhrase ];
+    }
+
+    if (goalVector === 1) {
+        goalRecommendation = 'Based on what you know of the student, continue the current goal or lower to ';
+            addPhrase = 'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, add ';
+    }
+
+    if (goalVector > 1) {
+        goalRecommendation = 'Lower the student\'s goal to ';
+        addPhrase = 'Lower the student\'s goal. Add ';
+    }
 
     if (grade === 'K' || grade < 5) {
         gradePhrase = 'grade 4 or lower';
@@ -445,46 +479,28 @@ function makeGoalRecommendationString(goalVector) {
         gradePhrase = 'grade 5 or higher';
     }
 
-    if (goalVector < -1) {
-        goalRecommendation = 'Raise the student\'s goal. Add ';
-    }
-
-    if (goalVector === -1) {
-        goalRecommendation =
-            'Based on what you know of the student, raise or continue the student\'s goal. If you raise the goal, add ';
-    }
-
-    if (goalVector === 0) {
-        return 'Continue the student\'s current goal of ' + initialGoal + '.';
-    }
-
-    if (goalVector === 1) {
-        goalRecommendation =
-            'Based on what you know of the student, lower or continue the student\'s goal. If you lower the goal, add ';
-    }
-
-    if (goalVector > 1) {
-        goalRecommendation = 'Lower the student\'s goal. Add ';
-    }
-
-    goalRecommendation += adjustAmount + ' (for a student in ' + gradePhrase + ')' + ' to the Average Cold Timing ' +
+    advancedGoalRecommendation += addPhrase + adjustAmount + ' (for a student in ' + gradePhrase + ')' + ' to the Average Cold Timing ' +
         'and round down to the nearest five: ' + formatNumberTwoDecimals(avgColdTiming) + ' + ' + adjustAmount + ' = ' +
         adjustedColdTiming;
 
     if (adjustedColdTiming !== roundedGoal) {
-        goalRecommendation += ', rounded down = ' + roundedGoal + '. '
+        advancedGoalRecommendation += ', rounded down = ' + roundedGoal + '. '
     } else {
-        goalRecommendation += '. ';
+        advancedGoalRecommendation += '. ';
     }
 
     if (roundedGoal > avgHotTiming) {
-        goalRecommendation += 'However, the new goal should not exceed the average hot timing, so in this case ' +
-            'we would recommend a goal of ' + (Math.floor(avgHotTiming / 5) * 5) + ' instead. ';
+        roundedGoal = (Math.floor(avgHotTiming / 5) * 5);
+        advancedGoalRecommendation += 'However, the new goal should not exceed the average hot timing, so in this case ' +
+            'we would recommend a goal of ' + roundedGoal + ' instead. ';
     }
 
-    goalRecommendation += 'Recheck the goal after the next three stories.';
+    goalRecommendation += roundedGoal + '. ';
 
-    return goalRecommendation;
+    goalRecommendation += recheckPhrase;
+    advancedGoalRecommendation += recheckPhrase;
+
+    return [ goalRecommendation, advancedGoalRecommendation ];
 }
 
 function clearGoalRecommendation() {
