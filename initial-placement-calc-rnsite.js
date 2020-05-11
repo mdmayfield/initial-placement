@@ -62,7 +62,7 @@ const recommendationChart = [
     [-1, -1, -1]
 ]
 
-const highlightClass = 'table-blue font-weight-bold';
+const highlightClass = 'table-green font-weight-bold';
 
 $(document).ready(initDocument);
 
