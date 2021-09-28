@@ -134,11 +134,11 @@ function initDocument() {
 function recalculate() {
     updateAvailableLevels();
     updateInitialPlacementRange();
-    ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
-    updateQuizTotal();
-    updateQuizPercent();
+    // ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
+    // updateQuizTotal();
+    // updateQuizPercent();
     updateRecommendations();
-    updateQuizTotal();
+    // updateQuizTotal();
 }
 
 function updateAvailableLevels() {
