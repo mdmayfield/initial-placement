@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- MM note to self: python -m SimpleHTTPServer 8000 in a 2nd terminal -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="jquery-3.4.1.slim.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="rnl-at-a-glance.js"></script>
+
+    <title>Placement Check: Read Naturally Live At-a-Glance</title>
+
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+    <style>
+        /**** Hide Number Input Arrows ****/
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 class="text-center">Placement Check: Read Naturally Live At-a-Glance</h1>
+        <div class="pt-2">
+            <p><strong>Instructions:</strong> Enter the information for this student's three most-recent stories.
+                Use the TAB key to move to the next field, and Shift-TAB to go back. You can also use the UP and
+                DOWN arrow keys to increase or decrease the values.</p>
+            <p>For more information about how these scores are calculated, please see
+                <a href="https://www.readnaturally.com/knowledgebase/documents-and-resources/23/512">this guide</a>.</p>
+        </div>
+        <div class="pt-3">
+            <form id="student-info">
+                <div class="form-row pt-2">
+                    <label for="name-notes" class="col-2 text-center">Name (optional)</label>
+                    <input id="name-notes" class="col-10">
+                </div>
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-2">
+                        <label for="grade-level" class="col text-center">Grade</label>
+                        <select class="form-control" name="grade-level" id="grade-level"
+                            title="Student's grade, i.e. K (kindergarten), 1, 2, 3, 4, ..., A (adult)">
+                            <option value="K">K</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="A">Adult</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label for="initial-encore-series" class="col text-center">Series</label>
+                        <select class="form-control" name="initial-encore-series" id="initial-encore-series"
+                            title="Student's initial series in Read Live (i.e. Sequenced, Phonics, Idioms)">
+                            <option value='seq' selected>Sequenced</option>
+                            <option value='pho'>Phonics</option>
+                            <option value='idi'>Idioms</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label for="initial-encore-level" class="col text-center">Initial Level</label>
+                        <select class="form-control" name="initial-encore-level" id="initial-encore-level"
+                            title="Student's initial level in Read Live (i.e. 1.0, 1.5, ...)">
+                            <option value=''></option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label for="initial-goal" class="col text-center">Initial Goal</label>
+                        <input type="number" class="form-control" name="initial-goal" value="60" min="0" max="200"
+                            step="1" id="initial-goal" title="Student's initial goal, in words correct per minute">
+                    </div>
+                    <div class="col-2">
+                        <label for="total-stories-completed" class="col text-center">Stories Completed in Level</label>
+                        <input type="number" class="form-control" name="total-stories-completed"
+                            id="total-stories-completed" value="3" min="0" max="24"
+                            title="The total number of stories the student has completed in this level so far">
+                    </div>
+                    <div class="col-2">
+                        <label for="initial-placement-range" class="col text-center">Initial Placement Range</label>
+                        <input type="text" class="form-control" name="initial-placement-range"
+                            id="initial-placement-range"
+                            title="Student's initial placement range (calculated from initial level)" readonly
+                            disabled="disabled">
+                    </div>
+                </div>
+
+                <div class="form-row pt-5 align-items-end">
+                    <div class="col-3"></div>
+                    <div class="col-2 text-center"><h6>3rd-most Recent</h6></div>
+                    <div class="col-2 text-center"><h6>2nd-most Recent</h6></div>
+                    <div class="col-2 text-center"><h6>Most Recent Story</h6></div>
+                    <div class="col-3 text-center"><h6>Average of Last 3 Stories</h6></div>
+                </div>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-3 text-right"><h6>Cold Timing</h6></div>
+                    <div class="col-2">
+                        <input type="text" class="form-control" name="cold-timing-1" id="cold-timing-1" value="60"
+                            min="0" max="500" title="Cold Timing for 3rd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="form-control" name="cold-timing-2" id="cold-timing-2" value="60"
+                            min="0" max="500" title="Cold Timing for 2nd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="form-control" name="cold-timing-3" id="cold-timing-3" value="60"
+                            min="0" max="500" title="Cold Timing for most recent story" disabled>
+                    </div>
+                    <div class="col-3">
+                        <input type="number" class="form-control" name="cold-timing-average" id="cold-timing-average"
+                            title="Student's average cold timing (calculated from first three stories)">
+                    </div>
+                </div>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-3 text-right"><h6>Number of Practices</h6></div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="num-practices-1" id="num-practices-1" value="5"
+                            min="0" max="500" title="Number of practices for 3rd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="num-practices-2" id="num-practices-2" value="5"
+                            min="0" max="500" title="Number of practices for 2nd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="num-practices-3" id="num-practices-3" value="5"
+                            min="0" max="500" title="Number of practices for most recent story" disabled>
+                    </div>
+                    <div class="col-3">
+                        <input type="number" class="form-control" name="num-practices-average" id="num-practices-average"
+                            title="Student's average number of practices (calculated from most recent three stories)">
+                    </div>
+                </div>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-3 text-right"><h6>Hot Timing</h6></div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="hot-timing-1" id="hot-timing-1" value="100"
+                            min="0" max="500" title="Hot Timing for 3rd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="hot-timing-2" id="hot-timing-2" value="100"
+                            min="0" max="500" title="Hot Timing for 2nd most recent story" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="hot-timing-3" id="hot-timing-3" value="100"
+                            min="0" max="500" title="Hot Timing for most recent story" disabled>
+                    </div>
+                    <div class="col-3">
+                        <input type="number" class="form-control" name="hot-timing-average" id="hot-timing-average"
+                            title="Student's average hot timing (calculated from most recent three stories)">
+                    </div>
+                </div>
+
+                <div class="form-row pt-2 align-items-end">
+                    <div class="col-1 col-md-2 text-right"><h6>Quiz Correct Out of</h6></div>
+                    <div class="col-2 col-md-1">
+                        <input type="text" class="form-control" name="quiz-total" id="quiz-total"
+                            title="Number of quiz questions in the level" value="" readonly disabled="disabled">
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="quiz-correct1" id="quiz-correct1"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="quiz-correct2" id="quiz-correct2"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9" disabled>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control" name="quiz-correct3" id="quiz-correct3"
+                            title="Number of quiz questions the student answered correctly" value="5" min="0" max="9" disabled>
+                    </div>
+                    <div class="col-3">
+                        <input type="number" class="form-control" name="quiz-percent" id="quiz-percent"
+                            title="Percent of comprehension quiz questions answered correctly" value="">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="pt-3">
+            <h3>Level Recommendation</h3>
+            <p><span id="level-recommendation"></span></p>
+            <h3>Goal Recommendation</h3>
+            <p><span id="goal-recommendation"></span></p>
+        </div>
+        <details>
+            <summary>Calculation Details (click to show/hide)</summary>
+            <div class="pt-3">
+                <table class="table table-bordered" id="check-il">
+                    <tbody>
+                        <tr class="d-flex">
+                            <td class="col-3 text-center align-middle">Level Calculations</td>
+                            <td class="col-3 table-primary text-center">Quiz 80% or higher</td>
+                            <td class="col-3 table-primary text-center">Quiz 60% - 79%</td>
+                            <td class="col-3 table-primary text-center">Quiz 59% or lower</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right">Average Cold Timing Higher than Initial Placement
+                                Range
+                            </td>
+                            <td class="col-3 text-center">Raise level</td>
+                            <td class="col-3 text-center">Continue level and provide comprehension support
+                            </td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right">Average Cold Timing Within Initial Placement
+                                Range
+                            </td>
+                            <td class="col-3 text-center">Continue level</td>
+                            <td class="col-3 text-center">Continue level and provide comprehension support
+                            </td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right">Average Cold Timing Lower than Initial Placement
+                                Range</td>
+                            <td class="col-3 text-center">Lower level</td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered" id="check-ig">
+                    <tbody>
+                        <tr class="d-flex">
+                            <td class="col-3 text-center align-middle">Goal Calculations</td>
+                            <td class="col-3 table-primary text-center">Goal is too low<br>Indicators:
+                                <span id="goal-too-low-signs"></span></td>
+                            <td class="col-3 table-primary text-center">Goal is appropriate<br>Indicators:
+                                <span id="goal-appropriate-signs"></span></td>
+                            <td class="col-3 table-primary text-center">Goal is too high<br>Indicators:
+                                <span id="goal-too-high-signs"></span></td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right" id='goal-minus-cold-timing'>Initial&nbsp;Goal -
+                                Average&nbsp;Cold&nbsp;Timing</td>
+                            <td class="col-3 text-center">Grades K-4: 25 or less<br>Grades 5+: 35 or less</td>
+                            <td class="col-3 text-center">Grades K-4: 26 - 35<br>Grades 5+: 36 - 45</td>
+                            <td class="col-3 text-center">Grades K-4: 36 or more<br>Grades 5+: 46 or more</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right" id='hot-timing-minus-goal'>
+                                Average&nbsp;Hot&nbsp;Timing - Initial&nbsp;Goal</td>
+                            <td class="col-3 text-center">&gt; 10</td>
+                            <td class="col-3 text-center">0 - 10</td>
+                            <td class="col-3 text-center">&lt; 0</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-primary text-right" id='average-num-practices'>Average
+                                #&nbsp;Practices
+                            </td>
+                            <td class="col-3 text-center">&lt; 3</td>
+                            <td class="col-3 text-center">3 - 10</td>
+                            <td class="col-3 text-center">&gt; 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>Goal Details</h5>
+            <p><span id="advanced-goal-recommendation"></span></p>
+        </details>
+        <details>
+            <summary>Privacy Information (click to show/hide)</summary>
+            <p>This calculator does not send data to Read Naturally or anyplace else. All calculations
+                are done locally, inside your browser. No student data from this calculator is stored anywhere,
+                except temporarily in your own browser on your own device.
+            </p>
+        </details>
+    </div>
+
+</body>
+
+</html>
