@@ -75,7 +75,7 @@ function initDocument() {
         updateRecommendations();
     });
 
-    ['grade-level', 'initial-goal', 'col-timing-average', 'num-practices-average',
+    ['grade-level', 'initial-goal', 'cold-timing-average', 'num-practices-average',
      'hot-timing-average', 'quiz-percent'].forEach((category) => {
          $('#' + category).on('input', () => {
              updateRecommendations();
@@ -92,53 +92,17 @@ function initDocument() {
 
     $('#initial-encore-level').on('input', () => {
         updateInitialPlacementRange();
-        // updateQuizTotal();
-        // updateQuizPercent();
         updateRecommendations();
     });
-
-    // Live-updating averages for cold timing, practices, hot timing - 3 fields each
-    // ['cold-timing', 'num-practices', 'hot-timing'].forEach((category) => {
-    //     [1, 2, 3].forEach((number) => {
-    //         $('#' + category + '-' + number).on('input', () => {
-    //             calculateAvg(category);
-    //             updateRecommendations();
-    //         });
-    //     });
-    // });
-
-    // [1, 2, 3].forEach((number) => {
-    //     $('#quiz-correct' + number).on('input', () => {
-    //         updateQuizPercent();
-    //         updateRecommendations();
-    //     });
-    // })
 
     recalculate();
 }
 
-// function calculateAvg(whatToAvg) {
-//     const num1 = Number($('#' + whatToAvg + '-1').val());
-//     const num2 = Number($('#' + whatToAvg + '-2').val());
-//     const num3 = Number($('#' + whatToAvg + '-3').val());
-//     const avg = $('#' + whatToAvg + '-average');
-
-//     if (num1 === 0 || num2 === 0 || num3 === 0) {
-//         avg.val('??');
-//         return;
-//     }
-
-//     avg.val(formatNumberTwoDecimals(Number((num1 + num2 + num3) / 3)));
-// }
 
 function recalculate() {
     updateAvailableLevels();
     updateInitialPlacementRange();
-    // ['cold-timing', 'num-practices', 'hot-timing'].forEach((avg) => calculateAvg(avg));
-    // updateQuizTotal();
-    // updateQuizPercent();
     updateRecommendations();
-    // updateQuizTotal();
 }
 
 function updateAvailableLevels() {
