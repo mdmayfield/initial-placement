@@ -62,7 +62,7 @@ const recommendationChart = [
     [-1, -1, -1]
 ]
 
-const highlightClass = ['table-success', 'font-weight-bold'];
+const highlightClass = 'table-green font-weight-bold';
 
 $(document).ready(initDocument);
 
@@ -85,8 +85,6 @@ function initDocument() {
     $('#initial-encore-series').on('input', () => {
         updateAvailableLevels();
         updateInitialPlacementRange();
-        // updateQuizTotal();
-        // updateQuizPercent();
         updateRecommendations();
     });
 
