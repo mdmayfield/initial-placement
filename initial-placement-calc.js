@@ -62,7 +62,7 @@ const recommendationChart = [
     [-1, -1, -1]
 ]
 
-const highlightClass = ['table-success', 'font-weight-bold'];
+const highlightClass = 'table-green font-weight-bold';
 
 $(document).ready(initDocument);
 
@@ -121,7 +121,7 @@ function calculateAvg(whatToAvg) {
         return;
     }
 
-    avg.val(formatNumberTwoDecimals(Number((num1 + num2 + num3) / 3)));
+    avg.val(Math.floor(Number((num1 + num2 + num3) / 3)));
 }
 
 function recalculate() {
@@ -353,13 +353,13 @@ function makeGoalRec(levelDirection) {
     const avgHotTiming = $('#hot-timing-average').val();
     const avgNumPractices = $('#num-practices-average').val();
 
-    $('#goal-minus-cold-timing').html('Initial&nbsp;Goal (' + initialGoal + ') - Average&nbsp;Cold&nbsp;Timing&nbsp;(' +
+    $('#goal-minus-cold-timing').html('Initial Goal (' + initialGoal + ') minus Average Cold Timing (' +
         formatNumberTwoDecimals(avgColdTiming) + ') = ' + formatNumberTwoDecimals(initialGoal - avgColdTiming));
-    $('#hot-timing-minus-goal').html('Average&nbsp;Hot&nbsp;Timing&nbsp;(' + formatNumberTwoDecimals(avgHotTiming) +
-        ') - Initial&nbsp;Goal (' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
+    $('#hot-timing-minus-goal').html('Average Hot Timing (' + formatNumberTwoDecimals(avgHotTiming) +
+        ') minus Initial Goal (' + initialGoal + ') = ' + formatNumberTwoDecimals(avgHotTiming - initialGoal));
     $('#average-num-practices').text('Average # Practices (' + formatNumberTwoDecimals(avgNumPractices) + ')');
 
-    if (initialGoal - avgColdTiming <= (grade > 4 ? 35 : 25)) {
+    if (initialGoal - avgColdTiming <= (grade > 4 ? 34 : 24)) {
         $($(goalRows[1]).find('td')[1]).addClass(highlightClass);
         levelTooLowSigns++;
     } else if (initialGoal - avgColdTiming <= (grade > 4 ? 45 : 35)) {
@@ -442,6 +442,7 @@ function makeGoalRecommendationStrings(goalVector) {
     const recheckPhrase = 'Recheck the goal after the next three stories.'
     const grade = $('#grade-level option:selected').val();
     const initialGoal = $('#initial-goal').val();
+    const quizPercent = $('#quiz-percent').val().split('%')[0];
     const adjustAmount = (grade > 4) ? 40 : 30;
     const avgColdTiming = Number($('#cold-timing-average').val());
     const avgHotTiming = Number($('#hot-timing-average').val());
@@ -451,6 +452,10 @@ function makeGoalRecommendationStrings(goalVector) {
     if (goalVector < -1) {
         goalRecommendation = 'Raise the student\'s goal to ';
         addPhrase = 'Raise the student\'s goal. Add ';
+        if (quizPercent < 80) {
+            goalRecommendation = 'When the quiz scores increase to at least 80%, consider a goal of ';
+            addPhrase = 'When the quiz scores increase to at least 80%, consider raising the student\'s goal. Add ';
+        }
     }
 
     if (goalVector === -1) {
@@ -493,12 +498,25 @@ function makeGoalRecommendationStrings(goalVector) {
         roundedGoal = (Math.floor(avgHotTiming / 5) * 5);
         advancedGoalRecommendation += 'However, the new goal should not exceed the average hot timing, so in this case ' +
             'we would recommend a goal of ' + roundedGoal + ' instead. ';
+        if (goalVector < 0 && roundedGoal === (Math.floor(initialGoal / 5) * 5)) {
+            goalRecommendation = 'Continue the student\'s current goal of ';
+            roundedGoal = initialGoal;
+        }
     }
 
     goalRecommendation += roundedGoal + '. ';
 
     goalRecommendation += recheckPhrase;
     advancedGoalRecommendation += recheckPhrase;
+
+    if (goalVector === -1 && quizPercent < 80) {
+        if (avgColdTiming <= initialGoal) {
+            goalRecommendation = 'Continue the goal since the student’s percent on comprehension is below 80%.';
+        } else {
+            goalRecommendation = 'The cold timing exceeds the goal, so raise the goal above the cold timing by at least 10.';
+        }
+        advancedGoalRecommendation = goalRecommendation;
+    }
 
     return [ goalRecommendation, advancedGoalRecommendation ];
 }
