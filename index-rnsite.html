@@ -219,85 +219,90 @@
     <div class="pt-3">
         <h3>Level Recommendation</h3>
         <p><span id="level-recommendation"></span></p>
+        <details>
+            <summary>Level Calculation Details (click to show/hide)</summary>
+            <div class="pt-3">
+                <table class="table table-bordered" id="check-il">
+                    <tbody>
+                        <tr class="d-flex">
+                            <td class="col-3 text-center align-middle">Level Calculations</td>
+                            <td class="col-3 table-blue text-center">Quiz 80% or higher</td>
+                            <td class="col-3 table-blue text-center">Quiz 60% - 79%</td>
+                            <td class="col-3 table-blue text-center">Quiz 59% or lower</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right">Average Cold Timing Higher than Initial Placement
+                                Range
+                            </td>
+                            <td class="col-3 text-center">Raise level</td>
+                            <td class="col-3 text-center">Continue level and provide comprehension support
+                            </td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right">Average Cold Timing Within Initial Placement
+                                Range
+                            </td>
+                            <td class="col-3 text-center">Continue level</td>
+                            <td class="col-3 text-center">Continue level and provide comprehension support
+                            </td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right">Average Cold Timing Lower than Initial Placement
+                                Range</td>
+                            <td class="col-3 text-center">Lower level</td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                            <td class="col-3 text-center">Lower level and provide comprehension support</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </details>
         <h3>Goal Recommendation</h3>
         <p><span id="goal-recommendation"></span></p>
+        <details>
+            <summary>Goal Calculation Details (click to show/hide)</summary>
+            <div class="pt-3">
+                <table class="table table-bordered" id="check-ig">
+                    <tbody>
+                        <tr class="d-flex">
+                            <td class="col-3 text-center align-middle">Goal Calculations</td>
+                            <td class="col-3 table-blue text-center">Goal is too low<br>Indicators:
+                                <span id="goal-too-low-signs"></span></td>
+                            <td class="col-3 table-blue text-center">Goal is appropriate<br>Indicators:
+                                <span id="goal-appropriate-signs"></span></td>
+                            <td class="col-3 table-blue text-center">Goal is too high<br>Indicators:
+                                <span id="goal-too-high-signs"></span></td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right" id='goal-minus-cold-timing'>Initial&nbsp;Goal -
+                                Average&nbsp;Cold&nbsp;Timing</td>
+                            <td class="col-3 text-center">Grades K-4: 24 or less<br>Grades 5+: 34 or less</td>
+                            <td class="col-3 text-center">Grades K-4: 25 - 35<br>Grades 5+: 35 - 45</td>
+                            <td class="col-3 text-center">Grades K-4: 36 or more<br>Grades 5+: 46 or more</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right" id='hot-timing-minus-goal'>
+                                Average&nbsp;Hot&nbsp;Timing - Initial&nbsp;Goal</td>
+                            <td class="col-3 text-center">&gt; 10</td>
+                            <td class="col-3 text-center">0 - 10</td>
+                            <td class="col-3 text-center">&lt; 0</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3 table-blue text-right" id='average-num-practices'>Average
+                                #&nbsp;Practices
+                            </td>
+                            <td class="col-3 text-center">&lt; 3</td>
+                            <td class="col-3 text-center">3 - 10</td>
+                            <td class="col-3 text-center">&gt; 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>Goal Details</h5>
+                <p><span id="advanced-goal-recommendation"></span></p>
+        </details>
     </div>
-    <details>
-        <summary>Calculation Details (click to show/hide)</summary>
-        <div class="pt-3">
-            <table class="table table-bordered" id="check-il">
-                <tbody>
-                    <tr class="d-flex">
-                        <td class="col-3 text-center align-middle">Level Calculations</td>
-                        <td class="col-3 table-blue text-center">Quiz 80% or higher</td>
-                        <td class="col-3 table-blue text-center">Quiz 60% - 79%</td>
-                        <td class="col-3 table-blue text-center">Quiz 59% or lower</td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right">Average Cold Timing Higher than Initial Placement
-                            Range
-                        </td>
-                        <td class="col-3 text-center">Raise level</td>
-                        <td class="col-3 text-center">Continue level and provide comprehension support
-                        </td>
-                        <td class="col-3 text-center">Lower level and provide comprehension support</td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right">Average Cold Timing Within Initial Placement
-                            Range
-                        </td>
-                        <td class="col-3 text-center">Continue level</td>
-                        <td class="col-3 text-center">Continue level and provide comprehension support
-                        </td>
-                        <td class="col-3 text-center">Lower level and provide comprehension support</td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right">Average Cold Timing Lower than Initial Placement
-                            Range</td>
-                        <td class="col-3 text-center">Lower level</td>
-                        <td class="col-3 text-center">Lower level and provide comprehension support</td>
-                        <td class="col-3 text-center">Lower level and provide comprehension support</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-bordered" id="check-ig">
-                <tbody>
-                    <tr class="d-flex">
-                        <td class="col-3 text-center align-middle">Goal Calculations</td>
-                        <td class="col-3 table-blue text-center">Goal is too low<br>Indicators:
-                            <span id="goal-too-low-signs"></span></td>
-                        <td class="col-3 table-blue text-center">Goal is appropriate<br>Indicators:
-                            <span id="goal-appropriate-signs"></span></td>
-                        <td class="col-3 table-blue text-center">Goal is too high<br>Indicators:
-                            <span id="goal-too-high-signs"></span></td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right" id='goal-minus-cold-timing'>Initial&nbsp;Goal -
-                            Average&nbsp;Cold&nbsp;Timing</td>
-                        <td class="col-3 text-center">Grades K-4: 25 or less<br>Grades 5+: 35 or less</td>
-                        <td class="col-3 text-center">Grades K-4: 26 - 35<br>Grades 5+: 36 - 45</td>
-                        <td class="col-3 text-center">Grades K-4: 36 or more<br>Grades 5+: 46 or more</td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right" id='hot-timing-minus-goal'>
-                            Average&nbsp;Hot&nbsp;Timing - Initial&nbsp;Goal</td>
-                        <td class="col-3 text-center">&gt; 10</td>
-                        <td class="col-3 text-center">0 - 10</td>
-                        <td class="col-3 text-center">&lt; 0</td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-3 table-blue text-right" id='average-num-practices'>Average
-                            #&nbsp;Practices
-                        </td>
-                        <td class="col-3 text-center">&lt; 3</td>
-                        <td class="col-3 text-center">3 - 10</td>
-                        <td class="col-3 text-center">&gt; 10</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h5>Goal Details</h5>
-            <p><span id="advanced-goal-recommendation"></span></p>
-    </details>
+    <br>
     <details>
         <summary>Privacy Information (click to show/hide)</summary>
         <p>This calculator does not send data to Read Naturally or anyplace else. All calculations
